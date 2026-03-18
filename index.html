@@ -1711,17 +1711,51 @@ const OWNER_EMAIL = 'romain.segly@gmail.com';
 const RESEND_KEY  = 're_cC4v9a9b_HhQQBFVsN6G1BFxW9y9prR7H';
 const FROM_EMAIL  = 'contact@nounours-barber.shop';
 
-// ─── ENVOI EMAIL VIA NETLIFY FUNCTION ───
+// ─── ENVOI EMAIL VIA RESEND ───
 async function sendEmail({ to, subject, html }) {
   try {
-    const res = await fetch('/.netlify/functions/send-email', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to, subject, html }),
+      headers: {
+        'Authorization': `Bearer ${RESEND_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: `Nounours Barber <${FROM_EMAIL}>`,
+        to: [to],
+        subject,
+        html,
+      }),
     });
     const data = await res.json();
-    if (!res.ok) console.error('Email error:', data);
-    else console.log('Email envoyé ✓ →', to);
+    if (!res.ok) {
+      console.error('Resend error:', data);
+      // Si l'adresse from est bloquée, réessayer en envoyant à l'owner uniquement
+      if (data.statusCode === 403 || data.name === 'validation_error') {
+        console.warn('FROM address blocked — forwarding to owner instead');
+        if (to !== OWNER_EMAIL) {
+          // Renvoyer le contenu à Nounours en précisant le destinataire d'origine
+          await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${RESEND_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: `Nounours Barber <${FROM_EMAIL}>`,
+              to: [OWNER_EMAIL],
+              subject: `[Pour ${to}] ${subject}`,
+              html: `<p style="font-family:Arial;background:#fff3cd;padding:12px;border-radius:4px;color:#333">
+                <strong>⚠️ Domaine non vérifié</strong> — Cet email était destiné à <strong>${to}</strong>.<br>
+                Une fois ton domaine vérifié sur Resend, il partira directement au client.
+              </p><hr>` + html,
+            }),
+          });
+        }
+      }
+    } else {
+      console.log('Email envoyé ✓', data.id, '→', to);
+    }
   } catch(e) {
     console.error('Email fetch error:', e);
   }
