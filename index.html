@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nounours Barber</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --black: #0A0A0A;
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --grey: #888;
+    --grey-light: #E8E4DC;
+    --radius: 4px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 999; opacity: 0.4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 48px;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--cream);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--cream); text-decoration: none;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    opacity: 0.7; transition: opacity 0.3s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-cta {
+    background: var(--gold); color: var(--black);
+    border: none; padding: 10px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: background 0.3s;
+    font-weight: 500;
+  }
+  .nav-cta:hover { background: var(--gold-light); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      linear-gradient(135deg, #0A0A0A 0%, #1a1410 100%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0; overflow: hidden; opacity: 0.06;
+  }
+  .hero-lines::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: 5%; width: 1px; height: 200%;
+    background: var(--gold); transform: rotate(15deg);
+  }
+  .hero-lines::after {
+    content: '';
+    position: absolute;
+    top: -50%; right: 18%; width: 1px; height: 200%;
+    background: var(--gold); transform: rotate(15deg);
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+  }
+  .hero-content { max-width: 680px; }
+  .hero-bear-above {
+    width: clamp(80px, 10vw, 140px);
+    margin-bottom: 28px;
+    animation: fadeIn 1s 0.3s ease both;
+  }
+  .hero-bear-above svg { display: block; width: 100%; height: auto; }
+  .hero-label {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+  .hero-title em {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.6em;
+    display: block;
+  }
+  .hero-sub {
+    margin-top: 32px;
+    font-size: 14px; letter-spacing: 1px;
+    color: rgba(245,240,232,0.5);
+    max-width: 360px; line-height: 1.8;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .hero-btn {
+    margin-top: 40px;
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--gold); color: var(--black);
+    padding: 16px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 500; cursor: pointer; border: none;
+    transition: transform 0.3s, background 0.3s;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+  .hero-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .hero-btn svg { transition: transform 0.3s; }
+  .hero-btn:hover svg { transform: translateX(4px); }
+  .hero-scroll {
+    position: absolute; bottom: 32px; right: 48px;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(245,240,232,0.3);
+    writing-mode: vertical-rl;
+    animation: fadeIn 1s 0.8s ease both;
+  }
+
+  /* ─── SERVICES ─── */
+  .section { padding: 120px 48px; }
+  .section-label {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1; margin-bottom: 60px;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+  }
+  .service-card {
+    background: rgba(245,240,232,0.03);
+    border: 1px solid rgba(245,240,232,0.06);
+    padding: 40px 32px;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold); transform: scaleX(0);
+    transition: transform 0.4s; transform-origin: left;
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover { background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.2); }
+  .service-icon { font-size: 28px; margin-bottom: 20px; }
+  .service-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px; letter-spacing: 2px; margin-bottom: 8px;
+  }
+  .service-desc { font-size: 13px; color: var(--grey); line-height: 1.7; margin-bottom: 24px; }
+  .service-price {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic; color: var(--gold); font-size: 20px;
+  }
+  .service-duration { font-size: 11px; color: var(--grey); letter-spacing: 1px; margin-top: 4px; }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+    margin: 0 48px;
+  }
+
+  /* ─── BOOKING SECTION ─── */
+  #booking {
+    background: rgba(245,240,232,0.02);
+    position: relative;
+  }
+  #booking::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+  }
+
+  /* ─── MODAL / FLOW ─── */
+  .booking-flow {
+    max-width: 680px;
+  }
+  .flow-steps {
+    display: flex; gap: 0; margin-bottom: 48px;
+    position: relative;
+  }
+  .flow-steps::before {
+    content: '';
+    position: absolute; top: 16px; left: 0; right: 0; height: 1px;
+    background: rgba(245,240,232,0.1); z-index: 0;
+  }
+  .step-dot {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    flex: 1; position: relative; z-index: 1;
+  }
+  .step-dot .dot {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid rgba(245,240,232,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 500; background: var(--black);
+    transition: all 0.3s;
+  }
+  .step-dot.active .dot, .step-dot.done .dot {
+    background: var(--gold); border-color: var(--gold); color: var(--black);
+  }
+  .step-dot .label {
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--grey); white-space: nowrap;
+  }
+  .step-dot.active .label { color: var(--gold); }
+
+  .step-content { display: none; }
+  .step-content.active { display: block; animation: fadeUp 0.4s ease; }
+
+  /* ─── FORM ELEMENTS ─── */
+  .form-group { margin-bottom: 24px; }
+  .form-label {
+    display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--grey); margin-bottom: 10px;
+  }
+  .form-input {
+    width: 100%; background: rgba(245,240,232,0.05);
+    border: 1px solid rgba(245,240,232,0.12);
+    padding: 14px 18px; color: var(--cream);
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    transition: border-color 0.3s; outline: none;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: rgba(245,240,232,0.3); }
+
+  .prestation-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  }
+  .prestation-card {
+    border: 1px solid rgba(245,240,232,0.1);
+    padding: 20px; cursor: pointer;
+    transition: all 0.3s; position: relative;
+  }
+  .prestation-card:hover { border-color: rgba(201,168,76,0.4); }
+  .prestation-card.selected { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+  .prestation-card .p-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; }
+  .prestation-card .p-price { color: var(--gold); font-size: 13px; margin-top: 4px; }
+  .prestation-card .p-dur { font-size: 11px; color: var(--grey); }
+  .prestation-card .check {
+    position: absolute; top: 12px; right: 12px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--gold); display: none;
+    align-items: center; justify-content: center;
+    font-size: 10px; color: var(--black);
+  }
+  .prestation-card.selected .check { display: flex; }
+
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-header {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+    margin-bottom: 8px;
+  }
+  .cal-header span {
+    text-align: center; font-size: 10px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--grey); padding: 4px 0;
+  }
+  .cal-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; cursor: pointer; border: 1px solid transparent;
+    transition: all 0.2s; border-radius: 2px;
+  }
+  .cal-day:hover:not(.disabled):not(.empty) { border-color: rgba(201,168,76,0.4); color: var(--gold); }
+  .cal-day.selected { background: var(--gold); color: var(--black); font-weight: 500; }
+  .cal-day.disabled { opacity: 0.2; cursor: not-allowed; }
+  .cal-day.empty { cursor: default; }
+  .cal-day.today { color: var(--gold); }
+
+  .cal-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .cal-nav button {
+    background: none; border: 1px solid rgba(245,240,232,0.15);
+    color: var(--cream); width: 32px; height: 32px;
+    cursor: pointer; transition: border-color 0.2s; font-size: 14px;
+  }
+  .cal-nav button:hover { border-color: var(--gold); color: var(--gold); }
+  .cal-month { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; }
+
+  .time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 24px; }
+  .time-slot {
+    border: 1px solid rgba(245,240,232,0.1);
+    padding: 10px; text-align: center;
+    font-size: 13px; cursor: pointer; transition: all 0.2s;
+  }
+  .time-slot:hover:not(.taken) { border-color: var(--gold); color: var(--gold); }
+  .time-slot.selected { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .time-slot.taken { opacity: 0.25; cursor: not-allowed; text-decoration: line-through; }
+
+  .btn-primary {
+    background: var(--gold); color: var(--black);
+    border: none; padding: 16px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 500; cursor: pointer; transition: all 0.3s;
+    width: 100%;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-secondary {
+    background: transparent; color: var(--cream);
+    border: 1px solid rgba(245,240,232,0.2);
+    padding: 14px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s; margin-top: 12px; width: 100%;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  .recap-card {
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 28px; margin-bottom: 28px;
+  }
+  .recap-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 12px 0; border-bottom: 1px solid rgba(245,240,232,0.06);
+  }
+  .recap-row:last-child { border-bottom: none; }
+  .recap-key { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); }
+  .recap-val { font-size: 14px; color: var(--cream); }
+  .recap-val.gold { color: var(--gold); font-family: 'Libre Baskerville', serif; font-style: italic; }
+
+  /* ─── SUCCESS ─── */
+  .success-screen {
+    text-align: center; padding: 40px 0;
+    animation: fadeUp 0.6s ease;
+  }
+  .success-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(201,168,76,0.1); border: 1px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin: 0 auto 32px;
+  }
+  .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; margin-bottom: 16px; }
+  .success-sub { font-size: 14px; color: var(--grey); line-height: 1.8; max-width: 400px; margin: 0 auto; }
+
+  /* ─── SOCIAL SLIDE ─── */
+  .social-slide {
+    text-align: center;
+    padding: 20px 0 40px;
+    animation: fadeUp 0.6s ease;
+  }
+  .social-slide-bear {
+    width: 90px; margin: 0 auto 24px;
+    animation: bearBounce 1s 0.2s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  .social-slide-bear svg { display: block; width: 100%; height: auto; }
+  @keyframes bearBounce {
+    from { transform: scale(0.4) translateY(20px); opacity: 0; }
+    to   { transform: scale(1) translateY(0);      opacity: 1; }
+  }
+  .social-slide-label {
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 12px;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+  .social-slide-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 6vw, 52px); letter-spacing: 2px; line-height: 1;
+    margin-bottom: 14px;
+    animation: fadeUp 0.5s 0.4s ease both;
+  }
+  .social-slide-title em {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic; color: var(--gold);
+    font-size: 0.65em; display: block;
+  }
+  .social-slide-sub {
+    font-size: 13px; color: var(--grey); line-height: 1.8;
+    max-width: 380px; margin: 0 auto 32px;
+    animation: fadeUp 0.5s 0.5s ease both;
+  }
+  .social-slide-cards {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    max-width: 520px; margin: 0 auto 32px;
+    animation: fadeUp 0.5s 0.6s ease both;
+  }
+  .social-slide-card {
+    flex: 1; min-width: 200px; max-width: 240px;
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 20px;
+    border: 1px solid rgba(245,240,232,0.1);
+    text-decoration: none; color: var(--cream);
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .social-slide-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(201,168,76,0.04);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .social-slide-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); }
+  .social-slide-card:hover::after { opacity: 1; }
+  .ssc-icon { color: var(--gold); flex-shrink: 0; }
+  .ssc-info { text-align: left; flex: 1; }
+  .ssc-network {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; letter-spacing: 2px;
+  }
+  .ssc-handle { font-size: 11px; color: var(--grey); margin-top: 2px; }
+  .ssc-btn {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); white-space: nowrap;
+  }
+  .social-slide-actions { animation: fadeUp 0.5s 0.75s ease both; }
+
+  /* mini recap dans le slide social */
+  .social-slide-recap {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 10px 20px; margin-bottom: 28px;
+    animation: fadeUp 0.4s ease both;
+  }
+  .social-slide-recap-check {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--gold); color: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+  .social-slide-recap-text {
+    font-size: 12px; letter-spacing: 1px; color: var(--cream);
+  }
+  .social-slide-recap-text span { color: var(--gold); font-weight: 500; }
+
+  /* ─── REMINDER BADGE ─── */
+  .reminder-info {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.15);
+    padding: 16px 20px; margin-top: 16px;
+    font-size: 12px; color: rgba(245,240,232,0.7); line-height: 1.6;
+  }
+  .reminder-info .ri { font-size: 18px; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 60px 48px;
+    border-top: 1px solid rgba(245,240,232,0.06);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px; letter-spacing: 4px; color: var(--cream);
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 12px; color: var(--grey); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ─── AUTH MODAL ─── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(10,10,10,0.92);
+    align-items: center; justify-content: center;
+    animation: fadeIn 0.3s;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: #111;
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 48px; max-width: 440px; width: 90%;
+    animation: fadeUp 0.4s ease;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 20px; right: 20px;
+    background: none; border: none; color: var(--grey);
+    font-size: 20px; cursor: pointer;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--cream); }
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; letter-spacing: 2px; margin-bottom: 8px;
+  }
+  .modal-sub { font-size: 13px; color: var(--grey); margin-bottom: 32px; }
+  .modal-tabs { display: flex; gap: 0; margin-bottom: 28px; border-bottom: 1px solid rgba(245,240,232,0.1); }
+  .modal-tab {
+    padding: 10px 20px; font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    color: var(--grey); transition: all 0.2s; background: none; border-left: none; border-right: none; border-top: none;
+  }
+  .modal-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ─── MY RDV ─── */
+  .rdv-list { margin-top: 32px; }
+  .rdv-item {
+    background: rgba(245,240,232,0.03);
+    border: 1px solid rgba(245,240,232,0.08);
+    padding: 20px 24px; margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: border-color 0.2s;
+  }
+  .rdv-item:hover { border-color: rgba(201,168,76,0.2); }
+  .rdv-prestation { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; }
+  .rdv-date { font-size: 12px; color: var(--grey); margin-top: 4px; }
+  .rdv-badge {
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 4px 12px; border: 1px solid;
+  }
+  .rdv-badge.confirmed { border-color: var(--gold); color: var(--gold); }
+  .rdv-badge.upcoming { border-color: rgba(245,240,232,0.3); color: var(--grey); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero, .section { padding-left: 24px; padding-right: 24px; }
+    .hero { padding-bottom: 60px; }
+    .hero-inner { flex-direction: column; align-items: flex-start; gap: 32px; }
+    .hero-bear { display: none; }
+    .divider { margin: 0 24px; }
+    footer { padding: 40px 24px; }
+    .prestation-grid { grid-template-columns: 1fr; }
+    .time-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero-scroll { display: none; }
+  }
+
+  /* Account section */
+  .account-indicator {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--grey);
+  }
+  .account-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+  }
+  .account-name { color: var(--cream); font-weight: 500; }
+
+  .notification-banner {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 12px 20px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 12px; color: rgba(245,240,232,0.8);
+    margin-bottom: 32px;
+  }
+
+  .hidden { display: none !important; }
+
+  /* ─── SOCIAL BANNER (top) ─── */
+  .social-banner {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: var(--gold);
+    padding: 8px 48px;
+    display: flex; align-items: center; justify-content: center; gap: 32px;
+    animation: fadeIn 0.5s ease;
+  }
+  .social-banner-text {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--black); font-weight: 500;
+  }
+  .social-banner-links { display: flex; gap: 20px; align-items: center; }
+  .social-banner-link {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--black); text-decoration: none; font-weight: 500;
+    transition: opacity 0.2s;
+  }
+  .social-banner-link:hover { opacity: 0.7; }
+  .social-banner-link svg { width: 14px; height: 14px; }
+  .social-banner-close {
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer;
+    color: var(--black); font-size: 14px; opacity: 0.6; transition: opacity 0.2s;
+  }
+  .social-banner-close:hover { opacity: 1; }
+
+  /* push nav down when banner visible */
+  body.banner-visible nav { top: 38px; }
+  body.banner-visible .hero { padding-top: 38px; }
+
+  /* ─── SOCIAL FOLLOW SECTION ─── */
+  .social-follow {
+    padding: 80px 48px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .social-follow::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .social-follow-label {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+  .social-follow-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 5vw, 56px);
+    letter-spacing: 2px; line-height: 1;
+    margin-bottom: 16px;
+  }
+  .social-follow-sub {
+    font-size: 14px; color: var(--grey);
+    max-width: 380px; margin: 0 auto 40px; line-height: 1.8;
+  }
+  .social-cards {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    max-width: 560px; margin: 0 auto;
+  }
+  .social-card {
+    flex: 1; min-width: 220px; max-width: 260px;
+    border: 1px solid rgba(245,240,232,0.08);
+    padding: 28px 24px;
+    text-decoration: none;
+    transition: all 0.3s; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .social-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold); transform: scaleX(0);
+    transition: transform 0.4s; transform-origin: center;
+  }
+  .social-card:hover::before { transform: scaleX(1); }
+  .social-card:hover { background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.25); transform: translateY(-4px); }
+  .social-card-icon { font-size: 32px; }
+  .social-card-network {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 3px; color: var(--cream);
+  }
+  .social-card-handle { font-size: 13px; color: var(--gold); letter-spacing: 1px; }
+  .social-card-cta {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--grey); margin-top: 4px;
+    border: 1px solid rgba(245,240,232,0.12);
+    padding: 6px 14px;
+  }
+
+  /* footer social links */
+  .footer-socials { display: flex; gap: 16px; margin-top: 10px; }
+  .footer-social-link {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--grey); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-social-link:hover { color: var(--gold); }
+
+  @media (max-width: 768px) {
+    .social-banner { padding: 8px 16px; gap: 12px; }
+    .social-banner-text { display: none; }
+    .social-follow { padding: 60px 24px; }
+  }
+
+  /* ─── LOYALTY / XP BAR ─── */
+  .loyalty-widget {
+    background: rgba(245,240,232,0.03);
+    border: 1px solid rgba(245,240,232,0.08);
+    padding: 24px 28px;
+    margin-bottom: 36px;
+    position: relative; overflow: hidden;
+  }
+  .loyalty-widget::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .loyalty-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .loyalty-rank {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .loyalty-badge {
+    font-size: 26px; line-height: 1;
+    filter: drop-shadow(0 0 8px rgba(201,168,76,0.5));
+  }
+  .loyalty-rank-info {}
+  .loyalty-rank-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 2px; color: var(--cream); line-height: 1;
+  }
+  .loyalty-rank-sub {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); margin-top: 2px;
+  }
+  .loyalty-xp-info {
+    text-align: right;
+    font-size: 11px; color: var(--grey); letter-spacing: 1px;
+  }
+  .loyalty-xp-count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; color: var(--cream); line-height: 1; display: block;
+  }
+
+  /* track */
+  .loyalty-track {
+    position: relative; height: 6px;
+    background: rgba(245,240,232,0.08);
+    overflow: visible; margin-bottom: 8px;
+  }
+  .loyalty-fill {
+    height: 100%;
+    background: linear-gradient(to right, #8B6914, var(--gold), var(--gold-light));
+    transition: width 1.2s cubic-bezier(.22,1,.36,1);
+    position: relative;
+    box-shadow: 0 0 10px rgba(201,168,76,0.4);
+  }
+  .loyalty-fill::after {
+    content: '';
+    position: absolute; right: -3px; top: 50%;
+    transform: translateY(-50%);
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--gold-light);
+    box-shadow: 0 0 8px rgba(232,201,106,0.8);
+  }
+
+  /* milestone dots */
+  .loyalty-milestones {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .loyalty-milestone-dot {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(245,240,232,0.15); border: 1px solid rgba(245,240,232,0.2);
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .loyalty-milestone-dot.reached {
+    background: var(--gold); border-color: var(--gold);
+    box-shadow: 0 0 6px rgba(201,168,76,0.6);
+  }
+
+  .loyalty-next {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--grey); letter-spacing: 1px;
+  }
+  .loyalty-next span:last-child { color: rgba(245,240,232,0.5); }
+
+  /* ─── UNLOCK TOAST (victory screen) ─── */
+  .unlock-overlay {
+    display: none; position: fixed; inset: 0; z-index: 700;
+    background: rgba(10,10,10,0.97);
+    align-items: center; justify-content: center;
+    flex-direction: column; text-align: center;
+  }
+  .unlock-overlay.open { display: flex; animation: fadeIn 0.3s ease; }
+
+  .unlock-particles {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .particle {
+    position: absolute; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--gold);
+    animation: particleFly 2s ease-out forwards;
+  }
+  @keyframes particleFly {
+    0%   { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+  }
+
+  .unlock-inner {
+    position: relative; z-index: 1;
+    animation: unlockPop 0.6s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes unlockPop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+  .unlock-rays {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 300px; height: 300px;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg, rgba(201,168,76,0.08) 10deg,
+      transparent 20deg, rgba(201,168,76,0.08) 30deg,
+      transparent 40deg, rgba(201,168,76,0.08) 50deg,
+      transparent 60deg, rgba(201,168,76,0.08) 70deg,
+      transparent 80deg, rgba(201,168,76,0.08) 90deg,
+      transparent 100deg, rgba(201,168,76,0.08) 110deg,
+      transparent 120deg, rgba(201,168,76,0.08) 130deg,
+      transparent 140deg, rgba(201,168,76,0.08) 150deg,
+      transparent 160deg, rgba(201,168,76,0.08) 170deg,
+      transparent 180deg, rgba(201,168,76,0.08) 190deg,
+      transparent 200deg, rgba(201,168,76,0.08) 210deg,
+      transparent 220deg, rgba(201,168,76,0.08) 230deg,
+      transparent 240deg, rgba(201,168,76,0.08) 250deg,
+      transparent 260deg, rgba(201,168,76,0.08) 270deg,
+      transparent 280deg, rgba(201,168,76,0.08) 290deg,
+      transparent 300deg, rgba(201,168,76,0.08) 310deg,
+      transparent 320deg, rgba(201,168,76,0.08) 330deg,
+      transparent 340deg, rgba(201,168,76,0.08) 350deg,
+      transparent 360deg
+    );
+    border-radius: 50%;
+    animation: spinRays 8s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes spinRays { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+  .unlock-emoji {
+    font-size: 72px; display: block; margin-bottom: 20px;
+    animation: bounceIn 0.8s 0.2s cubic-bezier(.34,1.56,.64,1) both;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.7));
+  }
+  @keyframes bounceIn {
+    from { transform: scale(0) rotate(-10deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+  }
+  .unlock-label {
+    font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px;
+    animation: fadeUp 0.5s 0.4s ease both;
+  }
+  .unlock-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 8vw, 64px); letter-spacing: 3px; line-height: 1;
+    margin-bottom: 12px;
+    animation: fadeUp 0.5s 0.5s ease both;
+  }
+  .unlock-desc {
+    font-size: 14px; color: var(--grey); line-height: 1.7;
+    max-width: 340px; margin: 0 auto 32px;
+    animation: fadeUp 0.5s 0.6s ease both;
+  }
+  .unlock-close {
+    background: var(--gold); color: var(--black);
+    border: none; padding: 14px 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase; font-weight: 500;
+    cursor: pointer; transition: background 0.3s;
+    animation: fadeUp 0.5s 0.7s ease both;
+  }
+  .unlock-close:hover { background: var(--gold-light); }
+
+  /* ─── UNLOCK SOCIAL SLIDE ─── */
+  .unlock-social {
+    display: none; position: relative; z-index: 1;
+    text-align: center; padding: 0 24px;
+    max-width: 480px; width: 100%;
+    animation: fadeUp 0.5s ease both;
+  }
+  .unlock-social.visible { display: block; }
+  .unlock-social-inner { display: flex; flex-direction: column; align-items: center; }
+  .us-bear { width: 72px; margin-bottom: 20px;
+    animation: bearBounce 0.8s cubic-bezier(.34,1.56,.64,1) both; }
+  .us-bear svg { display: block; width: 100%; height: auto; }
+  .us-label {
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px;
+  }
+  .us-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 5vw, 44px); letter-spacing: 2px; line-height: 1;
+    margin-bottom: 12px;
+  }
+  .us-title em {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic; color: var(--gold);
+    font-size: 0.65em; display: block;
+  }
+  .us-sub {
+    font-size: 13px; color: var(--grey); line-height: 1.8;
+    max-width: 340px; margin: 0 auto 28px;
+  }
+  .us-cards {
+    display: flex; gap: 10px; justify-content: center;
+    flex-wrap: wrap; width: 100%; margin-bottom: 28px;
+  }
+  .us-card {
+    flex: 1; min-width: 180px; max-width: 210px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 18px 16px;
+    border: 1px solid rgba(245,240,232,0.1);
+    text-decoration: none; color: var(--cream);
+    transition: all 0.3s;
+  }
+  .us-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); background: rgba(201,168,76,0.05); }
+  .us-network { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; }
+  .us-handle { font-size: 11px; color: var(--grey); }
+  .us-follow { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-top: 4px; }
+
+  /* ─── CONFIRMATION CARD MODAL ─── */
+  .card-overlay {
+    display: none; position: fixed; inset: 0; z-index: 600;
+    background: rgba(10,10,10,0.96);
+    align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .card-overlay.open { display: flex; animation: fadeIn 0.4s ease; }
+
+  .rdv-card {
+    width: 100%; max-width: 420px;
+    background: #0f0d0a;
+    border: 1px solid rgba(201,168,76,0.35);
+    position: relative;
+    animation: fadeUp 0.5s ease;
+    overflow: hidden;
+  }
+
+  /* top gold bar */
+  .rdv-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
+  }
+
+  .card-header {
+    padding: 32px 32px 24px;
+    border-bottom: 1px solid rgba(245,240,232,0.06);
+    display: flex; align-items: flex-start; justify-content: space-between;
+  }
+  .card-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px; letter-spacing: 5px; color: var(--cream);
+  }
+  .card-brand span { color: var(--gold); }
+  .card-tag {
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); border: 1px solid rgba(201,168,76,0.3);
+    padding: 4px 10px; margin-top: 4px;
+  }
+
+  .card-body { padding: 28px 32px; }
+
+  .card-prestation {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px; letter-spacing: 2px; line-height: 1;
+    margin-bottom: 6px;
+  }
+  .card-prestation-price {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic; color: var(--gold); font-size: 18px;
+    margin-bottom: 28px;
+  }
+
+  .card-info-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border: 1px solid rgba(245,240,232,0.08);
+  }
+  .card-info-cell {
+    padding: 16px 18px;
+    border-right: 1px solid rgba(245,240,232,0.08);
+    border-bottom: 1px solid rgba(245,240,232,0.08);
+  }
+  .card-info-cell:nth-child(2n) { border-right: none; }
+  .card-info-cell:nth-last-child(-n+2) { border-bottom: none; }
+  .card-info-label {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--grey); margin-bottom: 5px;
+  }
+  .card-info-val {
+    font-size: 13px; color: var(--cream); font-weight: 500; line-height: 1.4;
+  }
+
+  .card-footer {
+    padding: 20px 32px 28px;
+    border-top: 1px solid rgba(245,240,232,0.06);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+  }
+  .card-client-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; letter-spacing: 2px; color: var(--cream);
+  }
+  .card-client-email { font-size: 11px; color: var(--grey); }
+  .card-confirmed {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .card-confirmed::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .card-watermark {
+    position: absolute; bottom: 20px; right: 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px; letter-spacing: 4px;
+    color: rgba(201,168,76,0.04);
+    pointer-events: none; line-height: 1;
+    user-select: none;
+  }
+
+  .card-actions {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 0 32px 28px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── SOCIAL BANNER ─── -->
+<div class="social-banner" id="socialBanner">
+  <span class="social-banner-text">✦ Suis les coulisses du salon</span>
+  <div class="social-banner-links">
+    <a class="social-banner-link" href="https://www.instagram.com/nounours_barber_?igsh=emk2YzZtdGJ4Mjds&utm_source=qr" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      @nounours_barber_
+    </a>
+    <a class="social-banner-link" href="https://www.tiktok.com/@nounours_barber_?_r=1&_t=ZN-94lh5jEd4gI" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+      @nounours_barber_
+    </a>
+  </div>
+  <button class="social-banner-close" onclick="closeBanner()" aria-label="Fermer">✕</button>
+</div>
+
+<!-- ─── UNLOCK / LEVEL-UP OVERLAY ─── -->
+<div class="unlock-overlay" id="unlockOverlay">
+  <div class="unlock-particles" id="unlockParticles"></div>
+
+  <!-- Écran victoire -->
+  <div class="unlock-inner" id="unlockScreen">
+    <div class="unlock-rays"></div>
+    <span class="unlock-emoji" id="unlockEmoji">🏆</span>
+    <div class="unlock-label">✦ Nouveau palier débloqué ✦</div>
+    <div class="unlock-title" id="unlockTitle">TITRE</div>
+    <div class="unlock-desc" id="unlockDesc">Description</div>
+    <button class="unlock-close" id="unlockCloseBtn" onclick="closeUnlock()">Trop bien !</button>
+  </div>
+
+  <!-- Slide réseaux (après palier 1 uniquement) -->
+  <div class="unlock-social" id="unlockSocial">
+    <div class="unlock-social-inner">
+      <div class="us-bear">
+        <svg viewBox="0 0 100 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="15" r="11" stroke="#C9A84C" stroke-width="1" fill="none"/>
+          <circle cx="24" cy="15" r="5.5" stroke="#C9A84C" stroke-width="0.6" fill="none" opacity="0.4"/>
+          <circle cx="76" cy="15" r="11" stroke="#C9A84C" stroke-width="1" fill="none"/>
+          <circle cx="76" cy="15" r="5.5" stroke="#C9A84C" stroke-width="0.6" fill="none" opacity="0.4"/>
+          <ellipse cx="50" cy="42" rx="34" ry="30" stroke="#C9A84C" stroke-width="1" fill="none"/>
+          <circle cx="39" cy="36" r="2.8" fill="#C9A84C"/>
+          <circle cx="61" cy="36" r="2.8" fill="#C9A84C"/>
+          <circle cx="40.2" cy="34.8" r="1" fill="rgba(245,240,232,0.75)"/>
+          <circle cx="62.2" cy="34.8" r="1" fill="rgba(245,240,232,0.75)"/>
+          <path d="M44 47 Q50 42 56 47 Q53 51 47 51 Z" fill="#C9A84C" opacity="0.8"/>
+          <path d="M42 55 Q50 63 58 55" stroke="#C9A84C" stroke-width="0.9" stroke-linecap="round" fill="none" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="us-label">✦ Reste dans la boucle</div>
+      <h3 class="us-title">SUIS NOUNOURS<br><em>Sur les réseaux</em></h3>
+      <p class="us-sub">Transformations, coulisses du salon, conseils style… Rejoins la communauté et ne rate rien entre deux coupes.</p>
+      <div class="us-cards">
+        <a class="us-card" href="https://www.instagram.com/nounours_barber_?igsh=emk2YzZtdGJ4Mjds&utm_source=qr" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <span class="us-network">Instagram</span>
+          <span class="us-handle">@nounours_barber_</span>
+          <span class="us-follow">Suivre →</span>
+        </a>
+        <a class="us-card" href="https://www.tiktok.com/@nounours_barber_?_r=1&_t=ZN-94lh5jEd4gI" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9A84C"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+          <span class="us-network">TikTok</span>
+          <span class="us-handle">@nounours_barber_</span>
+          <span class="us-follow">Suivre →</span>
+        </a>
+      </div>
+      <button class="unlock-close" onclick="closeUnlock()">C'est noté, à bientôt ✦</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── CONFIRMATION CARD MODAL ─── -->
+<div class="card-overlay" id="cardOverlay">
+  <div class="rdv-card" id="rdvCard">
+    <div class="card-watermark">NB</div>
+    <div class="card-header">
+      <div>
+        <div class="card-brand">NOUNOURS<span>.</span></div>
+        <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-top:4px">Val d'Oise · Barber</div>
+      </div>
+      <div class="card-tag">Confirmé ✓</div>
+    </div>
+    <div class="card-body">
+      <div class="card-prestation" id="card-prestation">—</div>
+      <div class="card-prestation-price" id="card-price">—</div>
+      <div class="card-info-grid">
+        <div class="card-info-cell">
+          <div class="card-info-label">Date</div>
+          <div class="card-info-val" id="card-date">—</div>
+        </div>
+        <div class="card-info-cell">
+          <div class="card-info-label">Heure</div>
+          <div class="card-info-val" id="card-heure">—</div>
+        </div>
+        <div class="card-info-cell">
+          <div class="card-info-label">Durée estimée</div>
+          <div class="card-info-val" id="card-duree">—</div>
+        </div>
+        <div class="card-info-cell">
+          <div class="card-info-label">Format</div>
+          <div class="card-info-val" id="card-format">—</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div>
+        <div class="card-client-name" id="card-client">—</div>
+        <div class="card-client-email" id="card-email">—</div>
+      </div>
+      <div class="card-confirmed">Confirmé</div>
+    </div>
+    <div class="card-actions">
+      <button class="btn-primary" onclick="closeCard(); resetBooking()">Prendre un autre RDV</button>
+      <button class="btn-secondary" onclick="closeCard(); showMyRdv()">Voir mes rendez-vous</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── AUTH MODAL ─── -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">NOUNOURS <span style="color:var(--gold)">.</span></div>
+    <div class="modal-sub">Connecte-toi ou crée ton compte pour prendre rendez-vous</div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" onclick="switchTab('login')">Connexion</button>
+      <button class="modal-tab" onclick="switchTab('signup')">Créer un compte</button>
+    </div>
+    <!-- Login -->
+    <div id="loginForm">
+      <div class="form-group">
+        <label class="form-label">Adresse email</label>
+        <input type="email" class="form-input" id="loginEmail" placeholder="ton@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input type="password" class="form-input" id="loginPass" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" onclick="handleLogin()">Se connecter</button>
+      <p style="font-size:12px;color:var(--grey);text-align:center;margin-top:16px;cursor:pointer" onclick="switchTab('signup')">Pas encore de compte ? <span style="color:var(--gold)">Créer un compte</span></p>
+    </div>
+    <!-- Signup -->
+    <div id="signupForm" class="hidden">
+      <div class="form-group">
+        <label class="form-label">Prénom</label>
+        <input type="text" class="form-input" id="signupName" placeholder="Ton prénom">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Adresse email</label>
+        <input type="email" class="form-input" id="signupEmail" placeholder="ton@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input type="password" class="form-input" id="signupPass" placeholder="Min. 6 caractères">
+      </div>
+      <button class="btn-primary" onclick="handleSignup()">Créer mon compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#" class="nav-logo">NOUNOURS<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Prestations</a></li>
+    <li><a href="#infos">Horaires</a></li>
+    <li><a href="#booking">Réserver</a></li>
+    <li><a href="#rdv" id="myRdvLink" class="hidden">Mes RDV</a></li>
+  </ul>
+  <div id="navAuth"></div>
+  <div id="navUser" class="hidden account-indicator">
+    <div class="account-dot"></div>
+    <span class="account-name" id="navUserName"></span>
+    <button onclick="logout()" style="background:none;border:none;color:var(--grey);cursor:pointer;font-size:12px;margin-left:8px">✕</button>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+
+    <div class="hero-content">
+      <div class="hero-bear-above">
+        <svg viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- oreille gauche -->
+          <circle cx="38" cy="24" r="18" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
+          <circle cx="38" cy="24" r="9" stroke="#C9A84C" stroke-width="0.7" fill="none" opacity="0.45"/>
+          <!-- oreille droite -->
+          <circle cx="122" cy="24" r="18" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
+          <circle cx="122" cy="24" r="9" stroke="#C9A84C" stroke-width="0.7" fill="none" opacity="0.45"/>
+          <!-- tête -->
+          <ellipse cx="80" cy="66" rx="54" ry="50" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
+          <!-- yeux -->
+          <circle cx="62" cy="58" r="4" fill="#C9A84C"/>
+          <circle cx="98" cy="58" r="4" fill="#C9A84C"/>
+          <!-- reflets yeux -->
+          <circle cx="64" cy="56" r="1.4" fill="rgba(245,240,232,0.75)"/>
+          <circle cx="100" cy="56" r="1.4" fill="rgba(245,240,232,0.75)"/>
+          <!-- nez -->
+          <path d="M73 73 Q80 67 87 73 Q83 79 77 79 Z" fill="#C9A84C" opacity="0.85"/>
+          <!-- bouche -->
+          <path d="M71 82 Q80 91 89 82" stroke="#C9A84C" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
+        </svg>
+      </div>
+      <div class="hero-label">✦ Val d'Oise · Salon de coiffure</div>
+      <h1 class="hero-title">
+        NOUNOURS
+        <em>Barber</em>
+      </h1>
+      <p class="hero-sub">L'art du détail. Un résultat net, propre, avec le style que tu mérites. Prends ton RDV en 60 secondes.</p>
+      <button class="hero-btn" onclick="scrollToBook()">
+        Réserver maintenant
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+  <div class="hero-scroll">Défiler ↓</div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section class="section" id="services">
+  <div class="section-label">✦ Ce que je propose</div>
+  <h2 class="section-title">PRESTATIONS</h2>
+  <div class="services-grid">
+    <div class="service-card" onclick="selectAndBook('Coupe Simple')">
+      <div class="service-icon">✂️</div>
+      <div class="service-name">COUPE SIMPLE</div>
+      <p class="service-desc">Coupe propre, contours nets. Le classique revisité avec soin.</p>
+      <div class="service-price">15€</div>
+      <div class="service-duration">+5€ selon longueur</div>
+    </div>
+    <div class="service-card" onclick="selectAndBook('Coupe Simple + Barbe')">
+      <div class="service-icon">💈</div>
+      <div class="service-name">COUPE + BARBE</div>
+      <p class="service-desc">Le combo parfait. Coupe stylée + barbe taillée avec précision.</p>
+      <div class="service-price">17€</div>
+      <div class="service-duration">+5€ selon longueur</div>
+    </div>
+    <div class="service-card" onclick="selectAndBook('Barbe')">
+      <div class="service-icon">🪒</div>
+      <div class="service-name">BARBE</div>
+      <p class="service-desc">Taille soignée, lignes nettes. Pour une barbe toujours au top.</p>
+      <div class="service-price">10€</div>
+      <div class="service-duration">20 min</div>
+    </div>
+    <div class="service-card" onclick="selectAndBook('Contour')">
+      <div class="service-icon">📐</div>
+      <div class="service-name">CONTOUR</div>
+      <p class="service-desc">Redéfinition des contours pour un résultat ultra net et précis.</p>
+      <div class="service-price">7€</div>
+      <div class="service-duration">15 min</div>
+    </div>
+    <div class="service-card" onclick="selectAndBook('Rasage Crâne à Zéro')">
+      <div class="service-icon">⚡</div>
+      <div class="service-name">RASAGE CRÂNE</div>
+      <p class="service-desc">Rasage intégral du crâne à zéro. Net, propre, sans compromis.</p>
+      <div class="service-price">10€</div>
+      <div class="service-duration">25 min</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── HORAIRES & INFOS ─── -->
+<section class="section" id="infos">
+  <div class="section-label">✦ Disponibilités</div>
+  <h2 class="section-title">HORAIRES</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;max-width:680px">
+    <div style="background:rgba(245,240,232,0.03);border:1px solid rgba(245,240,232,0.06);padding:32px">
+      <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">Mardi → Samedi</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;line-height:1">21H00<br><span style="color:var(--gold)">ET +</span></div>
+      <div style="font-size:13px;color:var(--grey);margin-top:12px;line-height:1.7">Disponible en soirée.<br>En salon uniquement.</div>
+    </div>
+    <div style="background:rgba(245,240,232,0.03);border:1px solid rgba(245,240,232,0.06);padding:32px">
+      <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">Dimanche</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;line-height:1">12H<span style="color:var(--gold)">→</span>20H</div>
+      <div style="font-size:13px;color:var(--grey);margin-top:12px;line-height:1.7">Toute la journée.<br>En salon uniquement.</div>
+    </div>
+    <div style="background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.15);padding:32px">
+      <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">Zone</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;line-height:1.2">VAL D'OISE<br><span style="color:var(--gold)">95</span></div>
+      <div style="font-size:13px;color:var(--grey);margin-top:12px;line-height:1.7">Rendez-vous en salon.<br>Val d'Oise.</div>
+    </div>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:var(--grey);letter-spacing:1px">
+    ✕ Fermé le lundi
+  </div>
+</section>
+
+<div class="divider"></div>
+<section class="section" id="booking">
+  <div class="section-label">✦ Réservation en ligne</div>
+  <h2 class="section-title">TON RDV</h2>
+
+  <div class="booking-flow">
+
+    <!-- Booking flow (toujours visible) -->
+    <div id="bookingFlow">
+      <!-- Steps indicator -->
+      <div class="flow-steps">
+        <div class="step-dot active" id="step-ind-1">
+          <div class="dot">1</div>
+          <div class="label">Prestation</div>
+        </div>
+        <div class="step-dot" id="step-ind-2">
+          <div class="dot">2</div>
+          <div class="label">Date</div>
+        </div>
+        <div class="step-dot" id="step-ind-3">
+          <div class="dot">3</div>
+          <div class="label">Heure</div>
+        </div>
+        <div class="step-dot" id="step-ind-4">
+          <div class="dot">4</div>
+          <div class="label">Compte</div>
+        </div>
+        <div class="step-dot" id="step-ind-5">
+          <div class="dot">5</div>
+          <div class="label">Confirmation</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Prestation -->
+      <div class="step-content active" id="step1">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:24px">CHOISIR UNE PRESTATION</h3>
+        <div class="prestation-grid">
+          <div class="prestation-card" onclick="selectPrestation(PRESTATIONS[0],this)">
+            <div class="check">✓</div>
+            <div class="p-name">COUPE SIMPLE</div>
+            <div class="p-price">15€ <span style="font-size:10px;color:var(--grey)">+5€ si long</span></div>
+            <div class="p-dur">~30 min</div>
+          </div>
+          <div class="prestation-card" onclick="selectPrestation(PRESTATIONS[1],this)">
+            <div class="check">✓</div>
+            <div class="p-name">COUPE + BARBE</div>
+            <div class="p-price">17€ <span style="font-size:10px;color:var(--grey)">+5€ si long</span></div>
+            <div class="p-dur">~50 min</div>
+          </div>
+          <div class="prestation-card" onclick="selectPrestation(PRESTATIONS[2],this)">
+            <div class="check">✓</div>
+            <div class="p-name">BARBE</div>
+            <div class="p-price">10€</div>
+            <div class="p-dur">~20 min</div>
+          </div>
+          <div class="prestation-card" onclick="selectPrestation(PRESTATIONS[3],this)">
+            <div class="check">✓</div>
+            <div class="p-name">CONTOUR</div>
+            <div class="p-price">7€</div>
+            <div class="p-dur">~15 min</div>
+          </div>
+          <div class="prestation-card" onclick="selectPrestation(PRESTATIONS[4],this)">
+            <div class="check">✓</div>
+            <div class="p-name">RASAGE CRÂNE</div>
+            <div class="p-price">10€</div>
+            <div class="p-dur">~25 min</div>
+          </div>
+        </div>
+        <button class="btn-primary" style="margin-top:28px" onclick="goToStep(2)" id="step1Next" disabled>Continuer →</button>
+      </div>
+
+      <!-- Step 2: Date -->
+      <div class="step-content" id="step2">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:24px">CHOISIR UNE DATE</h3>
+        <div class="cal-nav">
+          <button onclick="prevMonth()">‹</button>
+          <div class="cal-month" id="calMonth"></div>
+          <button onclick="nextMonth()">›</button>
+        </div>
+        <div class="cal-header">
+          <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+        </div>
+        <div class="calendar-grid" id="calGrid"></div>
+        <button class="btn-primary" style="margin-top:28px" onclick="goToStep(3)" id="step2Next" disabled>Continuer →</button>
+        <button class="btn-secondary" onclick="goToStep(1)">← Retour</button>
+      </div>
+
+      <!-- Step 3: Time -->
+      <div class="step-content" id="step3">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:8px">CHOISIR L'HEURE</h3>
+        <p style="font-size:13px;color:var(--grey);margin-bottom:4px" id="step3Date"></p>
+        <div class="time-grid" id="timeGrid"></div>
+        <button class="btn-primary" style="margin-top:28px" onclick="goToStep(4)" id="step3Next" disabled>Continuer →</button>
+        <button class="btn-secondary" onclick="goToStep(2)">← Retour</button>
+      </div>
+
+      <!-- Step 4: CRÉATION DE COMPTE OBLIGATOIRE -->
+      <div class="step-content" id="step4">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:8px">DERNIÈRE ÉTAPE</h3>
+        <p style="font-size:13px;color:var(--grey);margin-bottom:28px;line-height:1.7">Ton créneau est réservé ✦ Crée ton compte en 30 secondes pour confirmer et recevoir tes rappels.</p>
+
+        <!-- Mini récap du RDV choisi -->
+        <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);padding:16px 20px;margin-bottom:28px;display:flex;gap:20px;flex-wrap:wrap;">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--grey)">PRESTATION<br><span style="font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--cream);letter-spacing:1px" id="auth-recap-presta">—</span></div>
+          <div style="font-size:11px;letter-spacing:1px;color:var(--grey)">DATE<br><span style="font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--cream);letter-spacing:1px" id="auth-recap-date">—</span></div>
+          <div style="font-size:11px;letter-spacing:1px;color:var(--grey)">HEURE<br><span style="font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--gold);letter-spacing:1px" id="auth-recap-heure">—</span></div>
+        </div>
+
+        <!-- Formulaire création de compte uniquement -->
+        <div id="authSignupForm">
+          <div class="form-group">
+            <label class="form-label">Prénom</label>
+            <input type="text" class="form-input" id="authSignupName" placeholder="Ton prénom">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Adresse email</label>
+            <input type="email" class="form-input" id="authSignupEmail" placeholder="ton@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mot de passe</label>
+            <input type="password" class="form-input" id="authSignupPass" placeholder="Min. 6 caractères">
+          </div>
+          <div class="reminder-info" style="margin-bottom:20px">
+            <span class="ri">🔔</span>
+            <span>Ton compte te permet de suivre tes RDV et de recevoir tes rappels automatiques par email.</span>
+          </div>
+          <button class="btn-primary" onclick="handleAuthSignup()">Créer mon compte & confirmer →</button>
+          <p style="font-size:12px;color:var(--grey);text-align:center;margin-top:16px">Déjà un compte ? <span style="color:var(--gold);cursor:pointer" onclick="showInlineLogin()">Se connecter</span></p>
+        </div>
+
+        <!-- Connexion inline (si déjà un compte) -->
+        <div id="authLoginForm" class="hidden">
+          <div class="form-group">
+            <label class="form-label">Adresse email</label>
+            <input type="email" class="form-input" id="authLoginEmail" placeholder="ton@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mot de passe</label>
+            <input type="password" class="form-input" id="authLoginPass" placeholder="••••••••">
+          </div>
+          <button class="btn-primary" onclick="handleAuthLogin()">Se connecter & confirmer →</button>
+          <p style="font-size:12px;color:var(--grey);text-align:center;margin-top:16px">Pas encore de compte ? <span style="color:var(--gold);cursor:pointer" onclick="showInlineSignup()">Créer un compte</span></p>
+        </div>
+
+        <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(3)">← Modifier l'heure</button>
+      </div>
+
+      <!-- Step 5: Récapitulatif final -->
+      <div class="step-content" id="step5">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:24px">RÉCAPITULATIF</h3>
+        <div class="recap-card">
+          <div class="recap-row">
+            <span class="recap-key">Client</span>
+            <span class="recap-val" id="recap-client"></span>
+          </div>
+          <div class="recap-row">
+            <span class="recap-key">Prestation</span>
+            <span class="recap-val" id="recap-presta"></span>
+          </div>
+          <div class="recap-row">
+            <span class="recap-key">Date</span>
+            <span class="recap-val" id="recap-date"></span>
+          </div>
+          <div class="recap-row">
+            <span class="recap-key">Heure</span>
+            <span class="recap-val" id="recap-heure"></span>
+          </div>
+          <div class="recap-row">
+            <span class="recap-key">Durée</span>
+            <span class="recap-val" id="recap-duree"></span>
+          </div>
+          <div class="recap-row">
+            <span class="recap-key">Prix</span>
+            <span class="recap-val gold" id="recap-prix"></span>
+          </div>
+        </div>
+        <div class="reminder-info">
+          <span class="ri">🔔</span>
+          <span>Un rappel te sera envoyé par email <strong>24h</strong> et <strong>2h avant</strong> ton rendez-vous. Nounours recevra également une notification.</span>
+        </div>
+        <button class="btn-primary" style="margin-top:24px" onclick="confirmBooking()">✓ Confirmer le rendez-vous</button>
+        <button class="btn-secondary" onclick="goToStep(3)">← Modifier</button>
+      </div>
+
+      <!-- Success -->
+      <!-- Success Step 1 : confirmation -->
+      <div class="step-content" id="stepSuccess">
+        <div class="success-screen">
+          <div class="success-icon">✓</div>
+          <div class="success-title">C'EST BON !</div>
+          <p class="success-sub">Ton rendez-vous est confirmé. Tu recevras un email de confirmation + des rappels automatiques avant ton passage chez Nounours. À très vite ✦</p>
+          <button class="btn-primary" style="margin-top:36px;max-width:320px;margin-left:auto;margin-right:auto;display:block" onclick="showSocialSlide()">Continuer →</button>
+        </div>
+      </div>
+
+      <!-- Slide réseaux sociaux (affiché directement après confirmation) -->
+      <div class="step-content" id="stepSocial">
+        <div class="social-slide">
+
+          <!-- mini recap RDV confirmé -->
+          <div class="social-slide-recap" id="socialRecap">
+            <div class="social-slide-recap-check">✓</div>
+            <div class="social-slide-recap-text">RDV confirmé — <span id="socialRecapPresta"></span> · <span id="socialRecapHeure"></span></div>
+          </div>
+
+          <!-- ours mini centré -->
+          <div class="social-slide-bear">
+            <svg viewBox="0 0 100 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="15" r="11" stroke="#C9A84C" stroke-width="1" fill="none"/>
+              <circle cx="24" cy="15" r="5.5" stroke="#C9A84C" stroke-width="0.6" fill="none" opacity="0.4"/>
+              <circle cx="76" cy="15" r="11" stroke="#C9A84C" stroke-width="1" fill="none"/>
+              <circle cx="76" cy="15" r="5.5" stroke="#C9A84C" stroke-width="0.6" fill="none" opacity="0.4"/>
+              <ellipse cx="50" cy="42" rx="34" ry="30" stroke="#C9A84C" stroke-width="1" fill="none"/>
+              <circle cx="39" cy="36" r="2.8" fill="#C9A84C"/>
+              <circle cx="61" cy="36" r="2.8" fill="#C9A84C"/>
+              <circle cx="40.2" cy="34.8" r="1" fill="rgba(245,240,232,0.75)"/>
+              <circle cx="62.2" cy="34.8" r="1" fill="rgba(245,240,232,0.75)"/>
+              <path d="M44 47 Q50 42 56 47 Q53 51 47 51 Z" fill="#C9A84C" opacity="0.8"/>
+              <path d="M42 55 Q50 63 58 55" stroke="#C9A84C" stroke-width="0.9" stroke-linecap="round" fill="none" opacity="0.6"/>
+            </svg>
+          </div>
+
+          <div class="social-slide-label">✦ Une dernière chose</div>
+          <h3 class="social-slide-title">SUIS NOUNOURS<br><em>Sur les réseaux</em></h3>
+          <p class="social-slide-sub">Transformations, coulisses, conseils style… Tout ce que tu rates entre deux coupes. Rejoins la communauté.</p>
+
+          <div class="social-slide-cards">
+            <a class="social-slide-card" href="https://www.instagram.com/nounours_barber_?igsh=emk2YzZtdGJ4Mjds&utm_source=qr" target="_blank" rel="noopener">
+              <div class="ssc-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </div>
+              <div class="ssc-info">
+                <div class="ssc-network">INSTAGRAM</div>
+                <div class="ssc-handle">@nounours_barber_</div>
+              </div>
+              <div class="ssc-btn">Suivre →</div>
+            </a>
+            <a class="social-slide-card" href="https://www.tiktok.com/@nounours_barber_?_r=1&_t=ZN-94lh5jEd4gI" target="_blank" rel="noopener">
+              <div class="ssc-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+              </div>
+              <div class="ssc-info">
+                <div class="ssc-network">TIKTOK</div>
+                <div class="ssc-handle">@nounours_barber_</div>
+              </div>
+              <div class="ssc-btn">Suivre →</div>
+            </a>
+          </div>
+
+          <div class="social-slide-actions">
+            <button class="btn-primary" style="max-width:320px;margin:0 auto;display:block" onclick="resetBooking()">Prendre un autre RDV</button>
+            <button class="btn-secondary" style="max-width:320px;margin:10px auto 0;display:block" onclick="showMyRdv()">Voir mes rendez-vous</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── MY RDV ─── -->
+<section class="section hidden" id="rdv">
+  <div class="section-label">✦ Ton espace</div>
+  <h2 class="section-title">MES RDV</h2>
+
+  <!-- LOYALTY BAR -->
+  <div class="loyalty-widget" id="loyaltyWidget">
+    <div class="loyalty-top">
+      <div class="loyalty-rank">
+        <div class="loyalty-badge" id="loyaltyBadge">🐣</div>
+        <div class="loyalty-rank-info">
+          <div class="loyalty-rank-name" id="loyaltyRankName">NOUVEAU VENU</div>
+          <div class="loyalty-rank-sub" id="loyaltyRankSub">Rang 1 · Nounours te tend les ciseaux</div>
+        </div>
+      </div>
+      <div class="loyalty-xp-info">
+        <span class="loyalty-xp-count" id="loyaltyXpCount">0</span>
+        RDV confirmés
+      </div>
+    </div>
+    <div class="loyalty-track">
+      <div class="loyalty-fill" id="loyaltyFill" style="width:0%"></div>
+      <div class="loyalty-milestones" id="loyaltyMilestones"></div>
+    </div>
+    <div class="loyalty-next">
+      <span id="loyaltyNextLabel">Prochain palier →</span>
+      <span id="loyaltyNextCount"></span>
+    </div>
+  </div>
+
+  <div class="rdv-list" id="rdvList">
+    <p style="color:var(--grey);font-size:14px">Aucun rendez-vous pour l'instant.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── FOLLOW SOCIAL ─── -->
+<section class="social-follow">
+  <div class="social-follow-label">✦ Reste dans la boucle</div>
+  <h2 class="social-follow-title">SUIS NOUNOURS</h2>
+  <p class="social-follow-sub">Transformations, coulisses du salon, conseils style… Tout est sur les réseaux. Rejoins la communauté.</p>
+  <div class="social-cards">
+    <a class="social-card" href="https://www.instagram.com/nounours_barber_?igsh=emk2YzZtdGJ4Mjds&utm_source=qr" target="_blank" rel="noopener">
+      <div class="social-card-icon">📸</div>
+      <div class="social-card-network">INSTAGRAM</div>
+      <div class="social-card-handle">@nounours_barber_</div>
+      <div class="social-card-cta">Suivre →</div>
+    </a>
+    <a class="social-card" href="https://www.tiktok.com/@nounours_barber_?_r=1&_t=ZN-94lh5jEd4gI" target="_blank" rel="noopener">
+      <div class="social-card-icon">🎬</div>
+      <div class="social-card-network">TIKTOK</div>
+      <div class="social-card-handle">@nounours_barber_</div>
+      <div class="social-card-cta">Suivre →</div>
+    </a>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div>
+    <div class="footer-logo">NOUNOURS<span>.</span></div>
+    <div style="font-size:12px;color:var(--grey);margin-top:8px">Val d'Oise · En salon ✦</div>
+    <div class="footer-socials">
+      <a class="footer-social-link" href="https://www.instagram.com/nounours_barber_?igsh=emk2YzZtdGJ4Mjds&utm_source=qr" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Instagram
+      </a>
+      <a class="footer-social-link" href="https://www.tiktok.com/@nounours_barber_?_r=1&_t=ZN-94lh5jEd4gI" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+        TikTok
+      </a>
+    </div>
+  </div>
+  <div style="text-align:center">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Disponible</div>
+    <div style="font-size:12px;color:var(--grey);line-height:1.8">Mar → Sam · 21h et +<br>Dimanche · 12h → 20h</div>
+  </div>
+  <div style="text-align:right">
+    <div class="footer-copy">© 2025 Nounours Barber</div>
+    <div style="font-size:12px;color:var(--grey);margin-top:6px">Tous droits réservés</div>
+  </div>
+</footer>
+
+<script>
+// ─── STATE ───
+let currentUser = null;
+let users = JSON.parse(localStorage.getItem('nb_users') || '{}');
+let appointments = JSON.parse(localStorage.getItem('nb_appointments') || '[]');
+
+// Restaurer la session au chargement
+const _savedSession = localStorage.getItem('nb_session');
+if (_savedSession) {
+  try {
+    const s = JSON.parse(_savedSession);
+    if (s && s.email && users[s.email]) {
+      currentUser = { email: s.email, name: users[s.email].name };
+    }
+  } catch(e) {}
+}
+
+// Adresse de notification Nounours
+const OWNER_EMAIL = 'romain.segly@gmail.com';
+const RESEND_KEY  = 're_cC4v9a9b_HhQQBFVsN6G1BFxW9y9prR7H';
+const FROM_EMAIL  = 'contact@nounours-barber.shop';
+
+// ─── ENVOI EMAIL VIA NETLIFY FUNCTION ───
+async function sendEmail({ to, subject, html }) {
+  try {
+    const res = await fetch('/.netlify/functions/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to, subject, html }),
+    });
+    const data = await res.json();
+    if (!res.ok) console.error('Email error:', data);
+    else console.log('Email envoyé ✓ →', to);
+  } catch(e) {
+    console.error('Email fetch error:', e);
+  }
+}
+
+function emailConfirmationClient(appt) {
+  return sendEmail({
+    to: appt.email,
+    subject: '✂️ Ton RDV chez Nounours Barber est confirmé !',
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;color:#F5F0E8;padding:32px">
+        <h2 style="color:#C9A84C;letter-spacing:3px;font-size:22px;margin-bottom:4px">NOUNOURS BARBER</h2>
+        <p style="color:#888;font-size:11px;letter-spacing:2px;margin-bottom:28px">VAL D'OISE · EN SALON</p>
+        <p style="font-size:15px">Bonjour <strong>${appt.client}</strong>,</p>
+        <p style="color:#aaa;line-height:1.7">Ton rendez-vous est confirmé 💈 On t'attend !</p>
+        <table style="width:100%;border-collapse:collapse;margin:24px 0">
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase">Prestation</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.prestation}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase;background:#111">Date</td><td style="padding:12px 14px;border:1px solid #222;background:#111">${appt.date}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase">Heure</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.time}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase;background:#111">Durée</td><td style="padding:12px 14px;border:1px solid #222;background:#111">${appt.duration}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase">Prix</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.price}</td></tr>
+        </table>
+        <p style="color:#aaa;font-size:13px;line-height:1.7">🔔 Tu recevras un rappel <strong style="color:#F5F0E8">24h avant</strong> ton passage. À très vite ✦</p>
+        <p style="color:#555;font-size:11px;margin-top:32px;border-top:1px solid #1a1a1a;padding-top:16px">— Nounours Barber · Val d'Oise</p>
+      </div>`,
+  });
+}
+
+function emailNotificationOwner(appt) {
+  return sendEmail({
+    to: OWNER_EMAIL,
+    subject: `💈 Nouveau RDV — ${appt.client} · ${appt.date}`,
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;color:#F5F0E8;padding:32px">
+        <h2 style="color:#C9A84C;letter-spacing:3px;font-size:22px;margin-bottom:4px">NOUVEAU RDV ✦</h2>
+        <p style="color:#888;font-size:11px;letter-spacing:2px;margin-bottom:28px">NOUNOURS BARBER</p>
+        <table style="width:100%;border-collapse:collapse;margin:0 0 24px">
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Client</td><td style="padding:12px 14px;border:1px solid #222;font-weight:bold">${appt.client}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;background:#111">Email</td><td style="padding:12px 14px;border:1px solid #222;background:#111;color:#C9A84C">${appt.email}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Prestation</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.prestation}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;background:#111">Date</td><td style="padding:12px 14px;border:1px solid #222;background:#111">${appt.date}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Heure</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.time}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;background:#111">Durée</td><td style="padding:12px 14px;border:1px solid #222;background:#111">${appt.duration}</td></tr>
+          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Prix</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.price}</td></tr>
+        </table>
+        <p style="color:#555;font-size:11px;border-top:1px solid #1a1a1a;padding-top:16px">— Nounours Barber · Notification automatique</p>
+      </div>`,
+  });
+}
+
+// ─── SOCIAL BANNER ───
+(function() {
+  const banner = document.getElementById('socialBanner');
+  if (localStorage.getItem('nb_banner_closed') === '1') {
+    banner.style.display = 'none';
+  } else {
+    document.body.classList.add('banner-visible');
+  }
+})();
+function closeBanner() {
+  document.getElementById('socialBanner').style.display = 'none';
+  document.body.classList.remove('banner-visible');
+  localStorage.setItem('nb_banner_closed', '1');
+}
+
+let booking = {
+  prestation: null, price: null, duration: null, durationMin: 30,
+  date: null, dateLabel: null, time: null
+};
+let currentStep = 1;
+
+// Calendar state
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+
+// Taken slots per date key
+const takenSlots = {};
+
+// ─── PRESTATION DATA ───
+// durationMin = durée réelle en minutes pour calcul des créneaux
+const PRESTATIONS = [
+  { name: 'Coupe Simple',        price: '15€ (+ 5€ selon longueur)', label: '15€',  durationMin: 30, durationLabel: '~30 min' },
+  { name: 'Coupe Simple + Barbe',price: '17€ (+ 5€ selon longueur)', label: '17€',  durationMin: 50, durationLabel: '~50 min' },
+  { name: 'Barbe',               price: '10€',                        label: '10€',  durationMin: 20, durationLabel: '~20 min' },
+  { name: 'Contour',             price: '7€',                         label: '7€',   durationMin: 15, durationLabel: '~15 min' },
+  { name: 'Rasage Crâne à Zéro', price: '10€',                        label: '10€',  durationMin: 25, durationLabel: '~25 min' },
+];
+
+// ─── AUTH ───
+function openModal() {
+  document.getElementById('authModal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('authModal').classList.remove('open');
+}
+function switchTab(tab) {
+  document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
+  document.getElementById('signupForm').classList.toggle('hidden', tab !== 'signup');
+}
+function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  if (!email) { alert('Entre ton email'); return; }
+  if (users[email] && users[email].password === pass) {
+    setUser({ email, name: users[email].name });
+    closeModal();
+  } else {
+    alert('Email ou mot de passe incorrect.');
+  }
+}
+function handleSignup() {
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const pass = document.getElementById('signupPass').value;
+  if (!name || !email || !pass) { alert('Remplis tous les champs'); return; }
+  if (pass.length < 6) { alert('Mot de passe trop court (min. 6 caractères)'); return; }
+  if (users[email]) { alert('Ce compte existe déjà. Connecte-toi !'); return; }
+  users[email] = { name, password: pass };
+  localStorage.setItem('nb_users', JSON.stringify(users));
+  setUser({ email, name });
+  closeModal();
+}
+function setUser(user) {
+  currentUser = user;
+  localStorage.setItem('nb_session', JSON.stringify({ email: user.email }));
+  document.getElementById('navAuth').classList.add('hidden');
+  document.getElementById('navUser').classList.remove('hidden');
+  document.getElementById('navUserName').textContent = user.name;
+  document.getElementById('myRdvLink').classList.remove('hidden');
+  updateRdvList();
+}
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('nb_session');
+  document.getElementById('navAuth').classList.remove('hidden');
+  document.getElementById('navUser').classList.add('hidden');
+  document.getElementById('myRdvLink').classList.add('hidden');
+  document.getElementById('rdv').classList.add('hidden');
+  resetBooking();
+}
+
+// ─── BOOKING FLOW ───
+function selectAndBook(prestation) {
+  document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    const cards = document.querySelectorAll('.prestation-card');
+    const idx = PRESTATIONS.findIndex(p => p.name === prestation);
+    if (idx >= 0) selectPrestation(PRESTATIONS[idx], cards[idx]);
+  }, 700);
+}
+
+function selectPrestation(p, el) {
+  document.querySelectorAll('.prestation-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  booking.prestation = p.name;
+  booking.price = p.price;
+  booking.duration = p.durationLabel;
+  booking.durationMin = p.durationMin;
+  document.getElementById('step1Next').disabled = false;
+  // reset time if already chosen (duration changed)
+  booking.time = null;
+}
+
+function goToStep(n) {
+  const cur = document.getElementById(`step${currentStep}`) || document.getElementById('stepSuccess');
+  if (cur) cur.classList.remove('active');
+  const curInd = document.getElementById(`step-ind-${currentStep}`);
+  if (curInd) { curInd.classList.remove('active'); curInd.classList.add('done'); }
+
+  currentStep = n;
+
+  const next = document.getElementById(`step${n}`);
+  if (next) next.classList.add('active');
+  const nextInd = document.getElementById(`step-ind-${n}`);
+  if (nextInd) { nextInd.classList.add('active'); nextInd.classList.remove('done'); }
+
+  if (n === 2) renderCalendar();
+  if (n === 3) renderTimeSlots();
+  if (n === 4) renderAuthRecap();
+  if (n === 5) renderRecap();
+}
+
+// ─── AUTH INLINE (étape 4) ───
+function renderAuthRecap() {
+  document.getElementById('auth-recap-presta').textContent = booking.prestation || '—';
+  const dateWords = (booking.dateLabel || '').split(' ');
+  if (dateWords[0]) dateWords[0] = dateWords[0].charAt(0).toUpperCase() + dateWords[0].slice(1);
+  document.getElementById('auth-recap-date').textContent = dateWords.slice(0,3).join(' ') || '—';
+  document.getElementById('auth-recap-heure').textContent = booking.time || '—';
+  // Si déjà connecté, montrer directement le bouton de confirmation rapide
+  if (currentUser) {
+    document.getElementById('authSignupForm').classList.add('hidden');
+    document.getElementById('authLoginForm').classList.add('hidden');
+    // Inject fast-confirm block if not there
+    let fc = document.getElementById('fastConfirm');
+    if (!fc) {
+      fc = document.createElement('div');
+      fc.id = 'fastConfirm';
+      fc.innerHTML = `
+        <div class="reminder-info" style="margin-bottom:20px">
+          <span class="ri">👤</span>
+          <span>Connecté en tant que <strong>${currentUser.name}</strong> · ${currentUser.email}</span>
+        </div>
+        <button class="btn-primary" onclick="goToStep(5)">Continuer vers la confirmation →</button>
+      `;
+      document.getElementById('authSignupForm').parentNode.insertBefore(fc, document.getElementById('authSignupForm'));
+    } else {
+      fc.classList.remove('hidden');
+    }
+  } else {
+    const fc = document.getElementById('fastConfirm');
+    if (fc) fc.classList.add('hidden');
+    showInlineSignup();
+  }
+}
+
+function showInlineLogin() {
+  document.getElementById('authSignupForm').classList.add('hidden');
+  document.getElementById('authLoginForm').classList.remove('hidden');
+}
+
+function showInlineSignup() {
+  document.getElementById('authLoginForm').classList.add('hidden');
+  document.getElementById('authSignupForm').classList.remove('hidden');
+}
+
+function handleAuthLogin() {
+  const email = document.getElementById('authLoginEmail').value.trim();
+  const pass  = document.getElementById('authLoginPass').value;
+  if (!email) { alert('Entre ton email'); return; }
+  if (!users[email] || users[email].password !== pass) {
+    alert('Email ou mot de passe incorrect.'); return;
+  }
+  setUser({ email, name: users[email].name });
+  goToStep(5);
+}
+
+function handleAuthSignup() {
+  const name  = document.getElementById('authSignupName').value.trim();
+  const email = document.getElementById('authSignupEmail').value.trim();
+  const pass  = document.getElementById('authSignupPass').value;
+  if (!name || !email || !pass) { alert('Remplis tous les champs'); return; }
+  if (pass.length < 6) { alert('Mot de passe trop court (min. 6 caractères)'); return; }
+  if (users[email]) { alert('Ce compte existe déjà. Connecte-toi !'); return; }
+  users[email] = { name, password: pass };
+  localStorage.setItem('nb_users', JSON.stringify(users));
+  currentUser = { email, name };
+  localStorage.setItem('nb_session', JSON.stringify({ email }));
+  document.getElementById('navAuth').classList.add('hidden');
+  document.getElementById('navUser').classList.remove('hidden');
+  document.getElementById('navUserName').textContent = name;
+  document.getElementById('myRdvLink').classList.remove('hidden');
+  goToStep(5);
+}
+
+// ─── RESTAURER LA NAV SI SESSION ACTIVE ───
+(function initNav() {
+  if (currentUser) {
+    document.getElementById('navAuth').classList.add('hidden');
+    document.getElementById('navUser').classList.remove('hidden');
+    document.getElementById('navUserName').textContent = currentUser.name;
+    document.getElementById('myRdvLink').classList.remove('hidden');
+  }
+})();
+
+// ─── CALENDAR ───
+const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+function renderCalendar() {
+  document.getElementById('calMonth').textContent = `${months[calMonth]} ${calYear}`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  const today = new Date();
+  const firstDay = new Date(calYear, calMonth, 1);
+  let startDow = firstDay.getDay();
+  startDow = startDow === 0 ? 6 : startDow - 1;
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  for (let i = 0; i < startDow; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty'; grid.appendChild(el);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    el.textContent = d;
+    const date = new Date(calYear, calMonth, d);
+    const isToday = date.toDateString() === today.toDateString();
+    const isPast = date < today && !isToday;
+    const isMonday = date.getDay() === 1;
+    if (isPast || isMonday) {
+      el.classList.add('disabled');
+    } else {
+      if (isToday) el.classList.add('today');
+      const key = `${calYear}-${calMonth}-${d}`;
+      if (booking.date === key) el.classList.add('selected');
+      el.onclick = () => selectDay(d, el, key, date);
+    }
+    grid.appendChild(el);
+  }
+}
+function selectDay(d, el, key, date) {
+  document.querySelectorAll('.cal-day').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  booking.date = key;
+  booking.time = null; // reset time when date changes
+  document.getElementById('step3Next').disabled = true;
+  const labels = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  booking.dateLabel = `${labels[date.getDay()]} ${d} ${months[calMonth]} ${calYear}`;
+  document.getElementById('step2Next').disabled = false;
+}
+function prevMonth() {
+  calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+function nextMonth() {
+  calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+}
+
+// ─── TIME SLOTS ───
+// Mardi–Samedi : soirée à partir de 21h
+// Dimanche : 12h–20h
+const eveningSlots = ['21:00','21:30','22:00','22:30','23:00','23:30'];
+const sundaySlots  = ['12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
+
+function getSlotsForDate(dateKey) {
+  const parts = dateKey.split('-');
+  const d = new Date(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
+  return d.getDay() === 0 ? sundaySlots : eveningSlots;
+}
+
+// Convert "HH:MM" to minutes since midnight
+function timeToMin(t) {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+
+// Check if a slot is free given taken slots and duration needed
+function isSlotFree(slot, taken, durationMin, allSlots) {
+  const start = timeToMin(slot);
+  const end = start + durationMin;
+  // Check all taken slots: if any taken slot overlaps [start, end)
+  for (const t of taken) {
+    const ts = timeToMin(t);
+    // Assume each taken slot blocks until ts + max(durationMin,30) min — use 30 min minimum block
+    const te = ts + 30;
+    if (start < te && end > ts) return false;
+  }
+  // Also check that the slot + duration doesn't overflow the available window
+  const lastSlot = allSlots[allSlots.length - 1];
+  const lastStart = timeToMin(lastSlot);
+  if (end > lastStart + 30) return false;
+  return true;
+}
+
+function renderTimeSlots() {
+  document.getElementById('step3Date').textContent = booking.dateLabel;
+  const grid = document.getElementById('timeGrid');
+  grid.innerHTML = '';
+  const allSlots = getSlotsForDate(booking.date);
+  const taken = (takenSlots[booking.date] || []);
+  const durationMin = booking.durationMin || 30;
+
+  // Show duration hint
+  let hint = document.getElementById('timeHint');
+  if (!hint) {
+    hint = document.createElement('p');
+    hint.id = 'timeHint';
+    hint.style.cssText = 'font-size:12px;color:var(--gold);letter-spacing:1px;margin-bottom:16px;margin-top:-8px';
+    grid.parentNode.insertBefore(hint, grid);
+  }
+  hint.textContent = `✦ Créneaux disponibles pour "${booking.prestation}" (${booking.duration})`;
+
+  allSlots.forEach(slot => {
+    const free = isSlotFree(slot, taken, durationMin, allSlots);
+    const el = document.createElement('div');
+    el.className = 'time-slot';
+    el.textContent = slot;
+    if (!free) {
+      el.classList.add('taken');
+    } else {
+      if (booking.time === slot) el.classList.add('selected');
+      el.onclick = () => selectTime(slot, el);
+    }
+    grid.appendChild(el);
+  });
+}
+
+function selectTime(slot, el) {
+  document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  booking.time = slot;
+  document.getElementById('step3Next').disabled = false;
+}
+
+// ─── RECAP ───
+function renderRecap() {
+  document.getElementById('recap-client').textContent = currentUser ? currentUser.name : '—';
+  document.getElementById('recap-presta').textContent = booking.prestation || '—';
+  document.getElementById('recap-date').textContent = booking.dateLabel || '—';
+  document.getElementById('recap-heure').textContent = booking.time || '—';
+  document.getElementById('recap-duree').textContent = booking.duration || '—';
+  document.getElementById('recap-prix').textContent = booking.price || '—';
+}
+
+// ─── CONFIRM + CARD ───
+function confirmBooking() {
+  const appt = {
+    id: Date.now(),
+    client: currentUser.name,
+    email: currentUser.email,
+    prestation: booking.prestation,
+    date: booking.dateLabel,
+    dateKey: booking.date,
+    time: booking.time,
+    duration: booking.duration,
+    durationMin: booking.durationMin,
+    price: booking.price,
+    confirmed: true
+  };
+  appointments.push(appt);
+  localStorage.setItem('nb_appointments', JSON.stringify(appointments));
+
+  // ─── ENVOI EMAILS AUTOMATIQUES ───
+  emailConfirmationClient(appt);   // confirmation au client
+  emailNotificationOwner(appt);    // notification à Nounours
+
+  // Block slots
+  if (!takenSlots[booking.date]) takenSlots[booking.date] = [];
+  takenSlots[booking.date].push(booking.time);
+
+  // Hide step 5, show social slide directly
+  document.getElementById('step5').classList.remove('active');
+  document.getElementById('step-ind-5').classList.add('done');
+  document.getElementById('stepSocial').classList.add('active');
+  updateRdvList();
+
+  // Show confirmation card as overlay too
+  showConfirmationCard(appt);
+}
+
+function showConfirmationCard(appt) {
+  // Remplir la carte popup
+  document.getElementById('card-prestation').textContent = appt.prestation.toUpperCase();
+  document.getElementById('card-price').textContent = appt.price;
+  const dateWords = appt.date.split(' ');
+  dateWords[0] = dateWords[0].charAt(0).toUpperCase() + dateWords[0].slice(1);
+  document.getElementById('card-date').textContent = dateWords.join(' ');
+  document.getElementById('card-heure').textContent = appt.time;
+  document.getElementById('card-duree').textContent = appt.duration;
+  document.getElementById('card-format').textContent = 'En salon';
+  document.getElementById('card-client').textContent = appt.client.toUpperCase();
+  document.getElementById('card-email').textContent = appt.email;
+  document.getElementById('cardOverlay').classList.add('open');
+
+  // Remplir le mini récap du slide social
+  document.getElementById('socialRecapPresta').textContent = appt.prestation;
+  document.getElementById('socialRecapHeure').textContent = appt.time;
+}
+
+function closeCard() {
+  document.getElementById('cardOverlay').classList.remove('open');
+}
+
+// Close card on overlay click
+document.getElementById('cardOverlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeCard();
+});
+
+function resetBooking() {
+  currentStep = 1;
+  booking = { prestation: null, price: null, duration: null, durationMin: 30, date: null, dateLabel: null, time: null };
+  ['stepSuccess','stepSocial','step2','step3','step4','step5'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  document.getElementById('step1').classList.add('active');
+  for (let i = 1; i <= 5; i++) {
+    const ind = document.getElementById(`step-ind-${i}`);
+    if (ind) ind.classList.remove('active','done');
+  }
+  document.getElementById('step-ind-1').classList.add('active');
+  document.querySelectorAll('.prestation-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('step1Next').disabled = true;
+  document.getElementById('step2Next').disabled = true;
+  document.getElementById('step3Next').disabled = true;
+  calMonth = new Date().getMonth(); calYear = new Date().getFullYear();
+  const hint = document.getElementById('timeHint');
+  if (hint) hint.remove();
+  // Reset auth inline fields
+  ['authLoginEmail','authLoginPass','authSignupName','authSignupEmail','authSignupPass'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('authSignupForm').classList.remove('hidden');
+  document.getElementById('authLoginForm').classList.add('hidden');
+  const fc = document.getElementById('fastConfirm');
+  if (fc) fc.classList.add('hidden');
+}
+
+function showSocialSlide() {
+  document.getElementById('stepSuccess').classList.remove('active');
+  const el = document.getElementById('stepSocial');
+  el.classList.add('active');
+}
+function scrollToBook() {
+  document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Close auth modal on overlay click
+document.getElementById('authModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+
+// Init calendar
+renderCalendar();
+
+// ─── LOYALTY SYSTEM ───
+const RANKS = [
+  { rdv: 0,   emoji: '🐣', name: 'NOUVEAU VENU',       sub: 'Rang 1 · Nounours te tend les ciseaux',          desc: 'Bienvenue dans la famille Nounours Barber !' },
+  { rdv: 1,   emoji: '✂️', name: 'PREMIÈRE COUPE',       sub: 'Rang 2 · T\'as goûté aux ciseaux de Nounours',   desc: 'Un premier RDV et déjà accro. C\'est normal.' },
+  { rdv: 2,   emoji: '🐻', name: 'PETIT NOUNOURS',      sub: 'Rang 3 · Le style commence à parler',            desc: 'Deux RDV, tu commences à t\'y connaître.' },
+  { rdv: 3,   emoji: '💈', name: 'HABITUÉ DU COULOIR',  sub: 'Rang 4 · Tu connais déjà le chemin',             desc: 'T\'arrives sans te perdre. Respect.' },
+  { rdv: 4,   emoji: '🎯', name: 'NOUNOURS RÉGULIER',   sub: 'Rang 5 · Le crâne toujours nickel',              desc: 'Régularité = style permanent. Tu l\'as compris.' },
+  { rdv: 5,   emoji: '🌟', name: 'LE STYLÉ DU 95',      sub: 'Rang 6 · Le Val d\'Oise sait qui t\'es',         desc: 'Dans le 95, ton look fait parler.' },
+  { rdv: 7,   emoji: '🔥', name: 'NOUNOURS ADDICT',     sub: 'Rang 7 · Les ciseaux, c\'est ta drogue',         desc: 'Tu reviens encore et encore. On te comprend.' },
+  { rdv: 9,   emoji: '💎', name: 'DIAMANT BRUT',        sub: 'Rang 8 · Taillé dans la masse',                  desc: 'Neuf RDV. Taillé, poli, impeccable.' },
+  { rdv: 12,  emoji: '👑', name: 'DIGNE D\'UN NOUNOURS',sub: 'Rang 9 · La couronne te va bien',                desc: 'Douze passages. Nounours te doit un café.' },
+  { rdv: 15,  emoji: '🐻‍❄️', name: 'NOUNOURS POLAIRE',  sub: 'Rang 10 · Froid dehors, chaud le style',        desc: 'Quinze RDV. Rare comme un ours polaire.' },
+  { rdv: 20,  emoji: '⚡', name: 'L\'ÉCLAIR DU 95',     sub: 'Rang 11 · On te reconnaît à ta coupe',           desc: 'Vingt RDV. Le Val d\'Oise t\'appartient.' },
+  { rdv: 25,  emoji: '🏆', name: 'LÉGENDE NOUNOURS',    sub: 'Rang 12 · Ton nom est gravé dans les ciseaux',   desc: 'Vingt-cinq passages. Tu es une légende vivante.' },
+  { rdv: 30,  emoji: '🎖️', name: 'MARÉCHAL DU STYLE',  sub: 'Rang 13 · On salue ton passage',                 desc: 'Trente RDV. Le respect s\'impose.' },
+  { rdv: 40,  emoji: '🌙', name: 'FANTÔME DE LA NUIT',  sub: 'Rang 14 · Toujours là quand Nounours allume',    desc: 'Quarante RDV en soirée. Tu vis la nuit.' },
+  { rdv: 50,  emoji: '🐻👑', name: 'CLIENT ROYAL',      sub: 'Rang MAX · La royauté méritée',                  desc: 'Cinquante rendez-vous. Tu es au sommet. Nounours s\'incline.' },
+];
+
+// Max rdv shown on bar = last rank threshold
+const MAX_RDV_BAR = RANKS[RANKS.length - 1].rdv;
+
+function getCurrentRankIndex(rdvCount) {
+  let idx = 0;
+  for (let i = 0; i < RANKS.length; i++) {
+    if (rdvCount >= RANKS[i].rdv) idx = i;
+    else break;
+  }
+  return idx;
+}
+
+function renderLoyaltyBar(rdvCount, showUnlock = false) {
+  const rankIdx = getCurrentRankIndex(rdvCount);
+  const rank = RANKS[rankIdx];
+  const nextRank = RANKS[rankIdx + 1] || null;
+
+  // Update rank info
+  document.getElementById('loyaltyBadge').textContent = rank.emoji;
+  document.getElementById('loyaltyRankName').textContent = rank.name;
+  document.getElementById('loyaltyRankSub').textContent = rank.sub;
+  document.getElementById('loyaltyXpCount').textContent = rdvCount;
+
+  // Compute fill %
+  let pct;
+  if (!nextRank) {
+    pct = 100;
+  } else {
+    const from = rank.rdv;
+    const to = nextRank.rdv;
+    pct = ((rdvCount - from) / (to - from)) * 100;
+    pct = Math.min(100, Math.max(0, pct));
+  }
+
+  // Map pct to bar % (relative to MAX_RDV_BAR)
+  const barPct = (rdvCount / MAX_RDV_BAR) * 100;
+
+  // Animate fill with a tiny delay
+  setTimeout(() => {
+    document.getElementById('loyaltyFill').style.width = Math.min(barPct, 100) + '%';
+  }, 200);
+
+  // Next label
+  if (nextRank) {
+    const remaining = nextRank.rdv - rdvCount;
+    document.getElementById('loyaltyNextLabel').textContent = `Prochain : ${nextRank.name} →`;
+    document.getElementById('loyaltyNextCount').textContent = `encore ${remaining} RDV`;
+  } else {
+    document.getElementById('loyaltyNextLabel').textContent = '✦ Rang maximum atteint — Client Royal';
+    document.getElementById('loyaltyNextCount').textContent = '';
+  }
+
+  // Milestone dots (show all rank thresholds on track)
+  const milestones = document.getElementById('loyaltyMilestones');
+  milestones.innerHTML = '';
+  RANKS.forEach((r, i) => {
+    if (r.rdv === 0) return;
+    const dot = document.createElement('div');
+    dot.className = 'loyalty-milestone-dot' + (rdvCount >= r.rdv ? ' reached' : '');
+    dot.style.left = `calc(${(r.rdv / MAX_RDV_BAR) * 100}% - 4px)`;
+    milestones.appendChild(dot);
+  });
+}
+
+function spawnParticles() {
+  const container = document.getElementById('unlockParticles');
+  container.innerHTML = '';
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = Math.random() * 360;
+    const dist = 120 + Math.random() * 280;
+    const tx = Math.cos(angle * Math.PI / 180) * dist;
+    const ty = Math.sin(angle * Math.PI / 180) * dist;
+    const colors = ['#C9A84C','#E8C96A','#fff','#F5F0E8','#a07828'];
+    p.style.cssText = `
+      left: ${cx}px; top: ${cy}px;
+      background: ${colors[Math.floor(Math.random()*colors.length)]};
+      width: ${2 + Math.random()*5}px;
+      height: ${2 + Math.random()*5}px;
+      --tx: ${tx}px; --ty: ${ty}px;
+      animation-delay: ${Math.random() * 0.4}s;
+      animation-duration: ${1.2 + Math.random() * 1}s;
+    `;
+    container.appendChild(p);
+  }
+}
+
+let _unlockIsFirstRank = false;
+
+function showUnlockScreen(rank) {
+  _unlockIsFirstRank = (rank.rdv === 1); // rang "PREMIÈRE COUPE"
+  document.getElementById('unlockEmoji').textContent = rank.emoji;
+  document.getElementById('unlockTitle').textContent = rank.name;
+  document.getElementById('unlockDesc').textContent = rank.desc;
+
+  // Toujours montrer l'écran victoire, cacher le social
+  document.getElementById('unlockScreen').style.display = 'block';
+  document.getElementById('unlockSocial').classList.remove('visible');
+
+  // Changer le texte du bouton selon si slide social suit
+  document.getElementById('unlockCloseBtn').textContent = _unlockIsFirstRank ? 'Trop bien ! →' : 'Trop bien !';
+
+  spawnParticles();
+  document.getElementById('unlockOverlay').classList.add('open');
+}
+
+function closeUnlock() {
+  // Si c'est le rang 1, transition vers le slide social
+  if (_unlockIsFirstRank) {
+    _unlockIsFirstRank = false; // évite boucle
+    document.getElementById('unlockScreen').style.display = 'none';
+    const social = document.getElementById('unlockSocial');
+    social.classList.add('visible');
+    spawnParticles(); // petite pluie de particules au slide social aussi
+    return;
+  }
+  document.getElementById('unlockOverlay').classList.remove('open');
+  document.getElementById('unlockSocial').classList.remove('visible');
+  document.getElementById('unlockScreen').style.display = 'block';
+}
+
+// Call this after a new appointment is confirmed
+function checkLoyaltyUnlock(prevCount, newCount) {
+  // Find if any rank threshold was crossed
+  for (let i = 1; i < RANKS.length; i++) {
+    if (prevCount < RANKS[i].rdv && newCount >= RANKS[i].rdv) {
+      // Level up!
+      setTimeout(() => showUnlockScreen(RANKS[i]), 1200);
+      break;
+    }
+  }
+}
+
+// ─── MY RDV (updated to include loyalty) ───
+function showMyRdv() {
+  document.getElementById('rdv').classList.remove('hidden');
+  document.getElementById('rdv').scrollIntoView({ behavior: 'smooth' });
+  updateRdvList();
+}
+
+function updateRdvList() {
+  if (!currentUser) return;
+  const myAppts = appointments.filter(a => a.email === currentUser.email);
+  renderLoyaltyBar(myAppts.length);
+
+  const list = document.getElementById('rdvList');
+  if (myAppts.length === 0) {
+    list.innerHTML = '<p style="color:var(--grey);font-size:14px">Aucun rendez-vous pour l\'instant.</p>';
+    return;
+  }
+  list.innerHTML = [...myAppts].reverse().map(a => `
+    <div class="rdv-item">
+      <div>
+        <div class="rdv-prestation">${a.prestation}</div>
+        <div class="rdv-date">📅 ${a.date} · ${a.time} · ${a.duration} · ${a.price}</div>
+      </div>
+      <div class="rdv-badge confirmed">Confirmé</div>
+    </div>
+  `).join('');
+}
+
+// Patch confirmBooking to trigger loyalty check
+const _originalConfirm = confirmBooking;
+confirmBooking = function() {
+  const prevCount = appointments.filter(a => a.email === currentUser?.email).length;
+  _originalConfirm();
+  const newCount = appointments.filter(a => a.email === currentUser?.email).length;
+  checkLoyaltyUnlock(prevCount, newCount);
+  document.getElementById('rdv').classList.remove('hidden');
+  renderLoyaltyBar(newCount);
+};
+
+// ─── RAPPEL 24H AVANT + RÉSUMÉ QUOTIDIEN ───
+(function checkReminders() {
+  const allAppts = JSON.parse(localStorage.getItem('nb_appointments') || '[]');
+  const sent24h  = JSON.parse(localStorage.getItem('nb_reminders_sent') || '[]');
+  const MONTHS   = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const DAYS     = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+
+  function dateLabel(d) {
+    return `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  const today    = new Date();
+  const tomorrow = new Date(); tomorrow.setDate(today.getDate() + 1);
+  const todayStr    = dateLabel(today).toLowerCase();
+  const tomorrowStr = dateLabel(tomorrow).toLowerCase();
+
+  // Rappels 24h
+  allAppts.forEach(appt => {
+    if (!appt.date) return;
+    const match = appt.date.toLowerCase().trim() === tomorrowStr;
+    const alreadySent = sent24h.includes(String(appt.id));
+    if (match && !alreadySent) {
+      sendEmail({
+        to: appt.email,
+        subject: `🔔 Rappel — Ton RDV chez Nounours demain !`,
+        html: `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;color:#F5F0E8;padding:32px">
+          <h2 style="color:#C9A84C;letter-spacing:3px;font-size:22px;margin-bottom:4px">NOUNOURS BARBER</h2>
+          <p style="color:#888;font-size:11px;letter-spacing:2px;margin-bottom:28px">VAL D'OISE · EN SALON</p>
+          <p style="font-size:15px">Hey <strong>${appt.client}</strong> 👋</p>
+          <p style="color:#aaa;line-height:1.7">Petit rappel — tu passes <strong style="color:#F5F0E8">demain</strong> chez Nounours !</p>
+          <p style="font-size:20px;color:#C9A84C;font-weight:bold;margin:20px 0">${appt.prestation} · ${appt.time}</p>
+          <p style="color:#aaa;font-size:13px">Viens les cheveux propres, on s'occupe du reste 😄</p>
+          <p style="color:#555;font-size:11px;margin-top:32px;border-top:1px solid #1a1a1a;padding-top:16px">— Nounours Barber · Val d'Oise</p>
+        </div>`,
+      });
+      sent24h.push(String(appt.id));
+    }
+  });
+  localStorage.setItem('nb_reminders_sent', JSON.stringify(sent24h));
+
+  // Résumé quotidien (une fois par jour)
+  const lastSummary = localStorage.getItem('nb_last_summary');
+  if (lastSummary !== today.toDateString()) {
+    const todayAppts = allAppts.filter(a => a.date && a.date.toLowerCase().trim() === todayStr);
+    if (todayAppts.length > 0) {
+      const rows = todayAppts.map(a => `
+        <tr>
+          <td style="padding:10px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${a.time}</td>
+          <td style="padding:10px 14px;border:1px solid #222">${a.client}</td>
+          <td style="padding:10px 14px;border:1px solid #222;color:#aaa">${a.prestation}</td>
+          <td style="padding:10px 14px;border:1px solid #222;color:#C9A84C">${a.price}</td>
+        </tr>`).join('');
+      sendEmail({
+        to: OWNER_EMAIL,
+        subject: `📅 Tes RDV du jour — ${dateLabel(today)}`,
+        html: `<div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#0A0A0A;color:#F5F0E8;padding:32px">
+          <h2 style="color:#C9A84C;letter-spacing:3px;font-size:22px;margin-bottom:4px">RÉSUMÉ DU JOUR ✦</h2>
+          <p style="color:#888;font-size:11px;letter-spacing:2px;margin-bottom:28px">${dateLabel(today).toUpperCase()}</p>
+          <p style="color:#aaa">Bonne journée Nounours ! Tu as <strong style="color:#F5F0E8">${todayAppts.length} RDV</strong> aujourd'hui :</p>
+          <table style="width:100%;border-collapse:collapse;margin:20px 0">
+            <tr style="background:#111">
+              <th style="padding:10px 14px;border:1px solid #222;color:#888;font-size:11px;text-transform:uppercase;text-align:left">Heure</th>
+              <th style="padding:10px 14px;border:1px solid #222;color:#888;font-size:11px;text-transform:uppercase;text-align:left">Client</th>
+              <th style="padding:10px 14px;border:1px solid #222;color:#888;font-size:11px;text-transform:uppercase;text-align:left">Prestation</th>
+              <th style="padding:10px 14px;border:1px solid #222;color:#888;font-size:11px;text-transform:uppercase;text-align:left">Prix</th>
+            </tr>
+            ${rows}
+          </table>
+          <p style="color:#555;font-size:11px;border-top:1px solid #1a1a1a;padding-top:16px">— Nounours Barber · Résumé automatique</p>
+        </div>`,
+      });
+    }
+    localStorage.setItem('nb_last_summary', today.toDateString());
+  }
+})();
+</script>
+</body>
+</html>
