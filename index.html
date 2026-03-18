@@ -1711,51 +1711,17 @@ const OWNER_EMAIL = 'romain.segly@gmail.com';
 const RESEND_KEY  = 're_cC4v9a9b_HhQQBFVsN6G1BFxW9y9prR7H';
 const FROM_EMAIL  = 'contact@nounours-barber.shop';
 
-// ─── ENVOI EMAIL VIA RESEND ───
+// ─── ENVOI EMAIL VIA NETLIFY FUNCTION ───
 async function sendEmail({ to, subject, html }) {
   try {
-    const res = await fetch('https://api.resend.com/emails', {
+    const res = await fetch('/.netlify/functions/send-email', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${RESEND_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: `Nounours Barber <${FROM_EMAIL}>`,
-        to: [to],
-        subject,
-        html,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to, subject, html }),
     });
     const data = await res.json();
-    if (!res.ok) {
-      console.error('Resend error:', data);
-      // Si l'adresse from est bloquée, réessayer en envoyant à l'owner uniquement
-      if (data.statusCode === 403 || data.name === 'validation_error') {
-        console.warn('FROM address blocked — forwarding to owner instead');
-        if (to !== OWNER_EMAIL) {
-          // Renvoyer le contenu à Nounours en précisant le destinataire d'origine
-          await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${RESEND_KEY}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              from: `Nounours Barber <${FROM_EMAIL}>`,
-              to: [OWNER_EMAIL],
-              subject: `[Pour ${to}] ${subject}`,
-              html: `<p style="font-family:Arial;background:#fff3cd;padding:12px;border-radius:4px;color:#333">
-                <strong>⚠️ Domaine non vérifié</strong> — Cet email était destiné à <strong>${to}</strong>.<br>
-                Une fois ton domaine vérifié sur Resend, il partira directement au client.
-              </p><hr>` + html,
-            }),
-          });
-        }
-      }
-    } else {
-      console.log('Email envoyé ✓', data.id, '→', to);
-    }
+    if (!res.ok) console.error('Email error:', data);
+    else console.log('Email envoyé ✓ →', to);
   } catch(e) {
     console.error('Email fetch error:', e);
   }
@@ -1766,20 +1732,72 @@ function emailConfirmationClient(appt) {
     to: appt.email,
     subject: '✂️ Ton RDV chez Nounours Barber est confirmé !',
     html: `
-      <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;color:#F5F0E8;padding:32px">
-        <h2 style="color:#C9A84C;letter-spacing:3px;font-size:22px;margin-bottom:4px">NOUNOURS BARBER</h2>
-        <p style="color:#888;font-size:11px;letter-spacing:2px;margin-bottom:28px">VAL D'OISE · EN SALON</p>
-        <p style="font-size:15px">Bonjour <strong>${appt.client}</strong>,</p>
-        <p style="color:#aaa;line-height:1.7">Ton rendez-vous est confirmé 💈 On t'attend !</p>
-        <table style="width:100%;border-collapse:collapse;margin:24px 0">
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase">Prestation</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.prestation}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase;background:#111">Date</td><td style="padding:12px 14px;border:1px solid #222;background:#111">${appt.date}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase">Heure</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.time}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase;background:#111">Durée</td><td style="padding:12px 14px;border:1px solid #222;background:#111">${appt.duration}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase">Prix</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.price}</td></tr>
-        </table>
-        <p style="color:#aaa;font-size:13px;line-height:1.7">🔔 Tu recevras un rappel <strong style="color:#F5F0E8">24h avant</strong> ton passage. À très vite ✦</p>
-        <p style="color:#555;font-size:11px;margin-top:32px;border-top:1px solid #1a1a1a;padding-top:16px">— Nounours Barber · Val d'Oise</p>
+      <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#0A0A0A;padding:0;border:1px solid #1a1a1a">
+
+        <!-- Header barre dorée -->
+        <div style="height:3px;background:linear-gradient(to right,#8B6914,#C9A84C,#E8C96A,#C9A84C,#8B6914)"></div>
+
+        <!-- Logo -->
+        <div style="padding:32px 36px 24px;border-bottom:1px solid #1a1a1a">
+          <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:10px;letter-spacing:3px;color:#666;margin-top:4px;text-transform:uppercase">Val d'Oise · En Salon</div>
+        </div>
+
+        <!-- Titre -->
+        <div style="padding:28px 36px 0">
+          <div style="font-size:10px;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px">✦ Confirmation de rendez-vous</div>
+          <div style="font-size:26px;font-weight:bold;letter-spacing:2px;color:#F5F0E8;text-transform:uppercase">C'EST CONFIRMÉ !</div>
+          <p style="color:#888;font-size:14px;line-height:1.7;margin-top:10px">Bonjour <strong style="color:#F5F0E8">${appt.client}</strong>, ton rendez-vous est bien enregistré. On t'attend 💈</p>
+        </div>
+
+        <!-- Carte RDV -->
+        <div style="margin:24px 36px;background:#111;border:1px solid #222;padding:0">
+
+          <!-- Prestation highlight -->
+          <div style="padding:20px 24px;border-bottom:1px solid #1a1a1a;background:#141414">
+            <div style="font-size:10px;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:6px">Prestation</div>
+            <div style="font-size:22px;font-weight:bold;letter-spacing:2px;color:#C9A84C;text-transform:uppercase">${appt.prestation}</div>
+            <div style="font-size:16px;color:#F5F0E8;font-style:italic;margin-top:4px">${appt.price}</div>
+          </div>
+
+          <!-- Infos en grille -->
+          <div style="display:grid">
+            <table style="width:100%;border-collapse:collapse">
+              <tr>
+                <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a;width:40%">
+                  <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Date</div>
+                  <div style="font-size:14px;color:#F5F0E8;font-weight:bold">${appt.date}</div>
+                </td>
+                <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a;border-left:1px solid #1a1a1a">
+                  <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Heure</div>
+                  <div style="font-size:20px;color:#C9A84C;font-weight:bold">${appt.time}</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:14px 24px">
+                  <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Durée estimée</div>
+                  <div style="font-size:14px;color:#F5F0E8">${appt.duration}</div>
+                </td>
+                <td style="padding:14px 24px;border-left:1px solid #1a1a1a">
+                  <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Format</div>
+                  <div style="font-size:14px;color:#F5F0E8">En salon</div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Rappel -->
+        <div style="margin:0 36px 28px;background:#0f0f0f;border:1px solid #1a1a1a;border-left:3px solid #C9A84C;padding:14px 20px">
+          <div style="font-size:13px;color:#aaa;line-height:1.7">🔔 Tu recevras un <strong style="color:#F5F0E8">rappel automatique 24h avant</strong> ton rendez-vous.</div>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding:20px 36px;border-top:1px solid #1a1a1a;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:bold;letter-spacing:3px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:11px;color:#444">Val d'Oise · 2025</div>
+        </div>
+        <div style="height:2px;background:linear-gradient(to right,transparent,#C9A84C,transparent)"></div>
       </div>`,
   });
 }
@@ -1787,21 +1805,70 @@ function emailConfirmationClient(appt) {
 function emailNotificationOwner(appt) {
   return sendEmail({
     to: OWNER_EMAIL,
-    subject: `💈 Nouveau RDV — ${appt.client} · ${appt.date}`,
+    subject: `💈 Nouveau RDV — ${appt.client} · ${appt.date} à ${appt.time}`,
     html: `
-      <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;color:#F5F0E8;padding:32px">
-        <h2 style="color:#C9A84C;letter-spacing:3px;font-size:22px;margin-bottom:4px">NOUVEAU RDV ✦</h2>
-        <p style="color:#888;font-size:11px;letter-spacing:2px;margin-bottom:28px">NOUNOURS BARBER</p>
-        <table style="width:100%;border-collapse:collapse;margin:0 0 24px">
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Client</td><td style="padding:12px 14px;border:1px solid #222;font-weight:bold">${appt.client}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;background:#111">Email</td><td style="padding:12px 14px;border:1px solid #222;background:#111;color:#C9A84C">${appt.email}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Prestation</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.prestation}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;background:#111">Date</td><td style="padding:12px 14px;border:1px solid #222;background:#111">${appt.date}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Heure</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.time}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;background:#111">Durée</td><td style="padding:12px 14px;border:1px solid #222;background:#111">${appt.duration}</td></tr>
-          <tr><td style="padding:12px 14px;border:1px solid #222;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Prix</td><td style="padding:12px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${appt.price}</td></tr>
-        </table>
-        <p style="color:#555;font-size:11px;border-top:1px solid #1a1a1a;padding-top:16px">— Nounours Barber · Notification automatique</p>
+      <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#0A0A0A;padding:0;border:1px solid #1a1a1a">
+
+        <!-- Header -->
+        <div style="height:3px;background:linear-gradient(to right,#8B6914,#C9A84C,#E8C96A,#C9A84C,#8B6914)"></div>
+
+        <div style="padding:32px 36px 24px;border-bottom:1px solid #1a1a1a">
+          <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:10px;letter-spacing:3px;color:#666;margin-top:4px">NOTIFICATION · NOUVEAU RDV</div>
+        </div>
+
+        <div style="padding:28px 36px 0">
+          <div style="font-size:10px;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px">✦ Nouvelle réservation</div>
+          <div style="font-size:26px;font-weight:bold;letter-spacing:2px;color:#F5F0E8;text-transform:uppercase">NOUVEAU RDV !</div>
+          <p style="color:#888;font-size:14px;line-height:1.7;margin-top:10px">Un client vient de réserver sur ton site.</p>
+        </div>
+
+        <!-- Client info -->
+        <div style="margin:24px 36px 0;background:#111;border:1px solid #222">
+          <div style="padding:16px 24px;border-bottom:1px solid #1a1a1a;background:#141414">
+            <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Client</div>
+            <div style="font-size:20px;font-weight:bold;color:#F5F0E8;text-transform:uppercase">${appt.client}</div>
+            <div style="font-size:13px;color:#C9A84C;margin-top:2px">${appt.email}</div>
+          </div>
+          <table style="width:100%;border-collapse:collapse">
+            <tr>
+              <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a">
+                <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Prestation</div>
+                <div style="font-size:15px;color:#C9A84C;font-weight:bold">${appt.prestation}</div>
+              </td>
+              <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a;border-left:1px solid #1a1a1a">
+                <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Prix</div>
+                <div style="font-size:15px;color:#C9A84C;font-weight:bold">${appt.price}</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a">
+                <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Date</div>
+                <div style="font-size:14px;color:#F5F0E8;font-weight:bold">${appt.date}</div>
+              </td>
+              <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a;border-left:1px solid #1a1a1a">
+                <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Heure</div>
+                <div style="font-size:20px;color:#C9A84C;font-weight:bold">${appt.time}</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 24px">
+                <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Durée</div>
+                <div style="font-size:14px;color:#F5F0E8">${appt.duration}</div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="margin:20px 36px 28px;background:#0f0f0f;border:1px solid #1a1a1a;border-left:3px solid #C9A84C;padding:14px 20px">
+          <div style="font-size:13px;color:#aaa">📅 Pense à bloquer ce créneau dans ton agenda.</div>
+        </div>
+
+        <div style="padding:20px 36px;border-top:1px solid #1a1a1a">
+          <div style="font-size:12px;font-weight:bold;letter-spacing:3px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:11px;color:#444;margin-top:4px">Notification automatique · Val d'Oise</div>
+        </div>
+        <div style="height:2px;background:linear-gradient(to right,transparent,#C9A84C,transparent)"></div>
       </div>`,
   });
 }
