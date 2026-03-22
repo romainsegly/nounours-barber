@@ -68,6 +68,19 @@
   }
   .nav-cta:hover { background: var(--gold-light); }
 
+  /* Bouton connexion nav */
+  .nav-login-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: transparent;
+    border: 1px solid rgba(245,240,232,0.2);
+    color: var(--cream);
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .nav-login-btn:hover { border-color: var(--gold); color: var(--gold); }
+
   /* ─── HERO ─── */
   .hero {
     min-height: 100vh;
@@ -1065,6 +1078,25 @@
   <button class="social-banner-close" onclick="closeBanner()" aria-label="Fermer">✕</button>
 </div>
 
+<!-- ─── LOGIN MODAL (connexion compte existant) ─── -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeLoginModal()">✕</button>
+    <div class="modal-title">CONNEXION <span style="color:var(--gold)">.</span></div>
+    <div class="modal-sub">Accède à ton espace et retrouve tous tes rendez-vous</div>
+    <div class="form-group" style="margin-top:24px">
+      <label class="form-label">Adresse email</label>
+      <input type="email" class="form-input" id="navLoginEmail" placeholder="ton@email.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mot de passe</label>
+      <input type="password" class="form-input" id="navLoginPass" placeholder="••••••••">
+    </div>
+    <button class="btn-primary" onclick="handleNavLogin()">Se connecter</button>
+    <p style="font-size:12px;color:var(--grey);text-align:center;margin-top:16px">Pas encore de compte ? <span style="color:var(--gold);cursor:pointer" onclick="closeLoginModal()">Réserve un RDV</span> pour en créer un.</p>
+  </div>
+</div>
+
 <!-- ─── UNLOCK / LEVEL-UP OVERLAY ─── -->
 <div class="unlock-overlay" id="unlockOverlay">
   <div class="unlock-particles" id="unlockParticles"></div>
@@ -1218,7 +1250,15 @@
     <li><a href="#booking">Réserver</a></li>
     <li><a href="#rdv" id="myRdvLink" class="hidden">Mes RDV</a></li>
   </ul>
-  <div id="navAuth"></div>
+  <div id="navAuth">
+    <button class="nav-login-btn" onclick="openLoginModal()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      Connexion
+    </button>
+  </div>
   <div id="navUser" class="hidden account-indicator">
     <div class="account-dot"></div>
     <span class="account-name" id="navUserName"></span>
@@ -1912,9 +1952,28 @@ const PRESTATIONS = [
 ];
 
 // ─── AUTH ───
-function openModal() {
-  document.getElementById('authModal').classList.add('open');
+function openLoginModal() {
+  document.getElementById('loginModal').classList.add('open');
 }
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.remove('open');
+}
+function handleNavLogin() {
+  const email = document.getElementById('navLoginEmail').value.trim();
+  const pass  = document.getElementById('navLoginPass').value;
+  if (!email) { alert('Entre ton email'); return; }
+  if (!users[email] || users[email].password !== pass) {
+    alert('Email ou mot de passe incorrect.'); return;
+  }
+  setUser({ email, name: users[email].name });
+  closeLoginModal();
+  // Montrer les RDV directement
+  showMyRdv();
+}
+// Fermer login modal sur overlay click
+document.getElementById('loginModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeLoginModal();
+});
 function closeModal() {
   document.getElementById('authModal').classList.remove('open');
 }
