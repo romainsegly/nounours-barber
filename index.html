@@ -1082,18 +1082,38 @@
 <div class="modal-overlay" id="loginModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeLoginModal()">✕</button>
-    <div class="modal-title">CONNEXION <span style="color:var(--gold)">.</span></div>
-    <div class="modal-sub">Accède à ton espace et retrouve tous tes rendez-vous</div>
-    <div class="form-group" style="margin-top:24px">
-      <label class="form-label">Adresse email</label>
-      <input type="email" class="form-input" id="navLoginEmail" placeholder="ton@email.com">
+
+    <!-- Vue connexion -->
+    <div id="loginView">
+      <div class="modal-title">CONNEXION <span style="color:var(--gold)">.</span></div>
+      <div class="modal-sub">Accède à ton espace et retrouve tous tes rendez-vous</div>
+      <div class="form-group" style="margin-top:24px">
+        <label class="form-label">Adresse email</label>
+        <input type="email" class="form-input" id="navLoginEmail" placeholder="ton@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input type="password" class="form-input" id="navLoginPass" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" onclick="handleNavLogin()">Se connecter</button>
+      <p style="font-size:12px;color:var(--grey);text-align:center;margin-top:14px;cursor:pointer" onclick="showForgotView()">
+        Mot de passe oublié ? <span style="color:var(--gold)">Réinitialiser</span>
+      </p>
+      <p style="font-size:12px;color:var(--grey);text-align:center;margin-top:8px">Pas encore de compte ? <span style="color:var(--gold);cursor:pointer" onclick="closeLoginModal()">Réserve un RDV</span> pour en créer un.</p>
     </div>
-    <div class="form-group">
-      <label class="form-label">Mot de passe</label>
-      <input type="password" class="form-input" id="navLoginPass" placeholder="••••••••">
+
+    <!-- Vue mot de passe oublié -->
+    <div id="forgotView" class="hidden">
+      <div class="modal-title">MOT DE PASSE <span style="color:var(--gold)">.</span></div>
+      <div class="modal-sub">Entre ton email — on t'envoie ton mot de passe actuel</div>
+      <div class="form-group" style="margin-top:24px">
+        <label class="form-label">Adresse email</label>
+        <input type="email" class="form-input" id="forgotEmail" placeholder="ton@email.com">
+      </div>
+      <button class="btn-primary" onclick="handleForgotPassword()">Envoyer mon mot de passe</button>
+      <button class="btn-secondary" style="margin-top:10px" onclick="showLoginView()">← Retour</button>
+      <div id="forgotMsg" style="display:none;margin-top:16px;padding:12px 16px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);font-size:13px;color:var(--cream);text-align:center;line-height:1.6"></div>
     </div>
-    <button class="btn-primary" onclick="handleNavLogin()">Se connecter</button>
-    <p style="font-size:12px;color:var(--grey);text-align:center;margin-top:16px">Pas encore de compte ? <span style="color:var(--gold);cursor:pointer" onclick="closeLoginModal()">Réserve un RDV</span> pour en créer un.</p>
   </div>
 </div>
 
@@ -1953,10 +1973,21 @@ const PRESTATIONS = [
 
 // ─── AUTH ───
 function openLoginModal() {
+  showLoginView();
   document.getElementById('loginModal').classList.add('open');
 }
 function closeLoginModal() {
   document.getElementById('loginModal').classList.remove('open');
+}
+function showLoginView() {
+  document.getElementById('loginView').classList.remove('hidden');
+  document.getElementById('forgotView').classList.add('hidden');
+}
+function showForgotView() {
+  document.getElementById('loginView').classList.add('hidden');
+  document.getElementById('forgotView').classList.remove('hidden');
+  document.getElementById('forgotMsg').style.display = 'none';
+  document.getElementById('forgotEmail').value = document.getElementById('navLoginEmail').value || '';
 }
 function handleNavLogin() {
   const email = document.getElementById('navLoginEmail').value.trim();
@@ -1967,8 +1998,46 @@ function handleNavLogin() {
   }
   setUser({ email, name: users[email].name });
   closeLoginModal();
-  // Montrer les RDV directement
   showMyRdv();
+}
+function handleForgotPassword() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  const msg = document.getElementById('forgotMsg');
+  if (!email) { alert('Entre ton email'); return; }
+  if (!users[email]) {
+    msg.style.display = 'block';
+    msg.textContent = '❌ Aucun compte trouvé avec cet email.';
+    return;
+  }
+  // Envoyer le mot de passe par email via Resend
+  sendEmail({
+    to: email,
+    subject: '🔑 Ton mot de passe Nounours Barber',
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;padding:0;border:1px solid #1a1a1a">
+        <div style="height:3px;background:linear-gradient(to right,#8B6914,#C9A84C,#E8C96A,#C9A84C,#8B6914)"></div>
+        <div style="padding:32px 36px 24px;border-bottom:1px solid #1a1a1a">
+          <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:10px;letter-spacing:3px;color:#666;margin-top:4px">VAL D'OISE · EN SALON</div>
+        </div>
+        <div style="padding:28px 36px">
+          <div style="font-size:10px;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px">✦ Récupération de compte</div>
+          <div style="font-size:22px;font-weight:bold;letter-spacing:2px;color:#F5F0E8;text-transform:uppercase;margin-bottom:16px">TON MOT DE PASSE</div>
+          <p style="color:#aaa;font-size:14px;line-height:1.7;margin-bottom:24px">Bonjour <strong style="color:#F5F0E8">${users[email].name}</strong>, voici ton mot de passe :</p>
+          <div style="background:#111;border:1px solid #222;border-left:3px solid #C9A84C;padding:16px 24px;margin-bottom:24px">
+            <div style="font-size:10px;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:8px">Mot de passe</div>
+            <div style="font-size:20px;color:#C9A84C;font-weight:bold;letter-spacing:2px">${users[email].password}</div>
+          </div>
+          <p style="color:#666;font-size:12px;line-height:1.7">Par mesure de sécurité, pense à le noter quelque part de sûr.</p>
+        </div>
+        <div style="padding:20px 36px;border-top:1px solid #1a1a1a">
+          <div style="font-size:12px;font-weight:bold;letter-spacing:3px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+        </div>
+        <div style="height:2px;background:linear-gradient(to right,transparent,#C9A84C,transparent)"></div>
+      </div>`,
+  });
+  msg.style.display = 'block';
+  msg.innerHTML = '✅ Email envoyé sur <strong>' + email + '</strong><br>Vérifie ta boîte mail 📧';
 }
 // Fermer login modal sur overlay click
 document.getElementById('loginModal').addEventListener('click', e => {
