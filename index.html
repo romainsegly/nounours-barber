@@ -1771,6 +1771,52 @@ const OWNER_EMAIL = 'romain.segly@gmail.com';
 const RESEND_KEY  = 're_cC4v9a9b_HhQQBFVsN6G1BFxW9y9prR7H';
 const FROM_EMAIL  = 'contact@nounours-barber.shop';
 
+// ─── SUPABASE CONFIG ───
+const SUPABASE_URL = 'https://yykdiakfmzwaovsmlugt.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_-hjc7kpYVFhekecSRuSg-A_O9rHkn8c';
+let sb = null;
+
+// Charger Supabase dynamiquement
+(async function initSupabase() {
+  try {
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+    sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('Supabase initialisé ✓');
+    // Vérifier session active
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) {
+      const meta = session.user.user_metadata;
+      currentUser = { email: session.user.email, name: meta?.name || session.user.email.split('@')[0] };
+      applyUserToUI();
+      loadUserAppointments();
+    }
+  } catch(e) {
+    console.error('Supabase init error:', e);
+  }
+})();
+
+function applyUserToUI() {
+  if (!currentUser) return;
+  document.getElementById('navAuth').classList.add('hidden');
+  document.getElementById('navUser').classList.remove('hidden');
+  document.getElementById('navUserName').textContent = currentUser.name;
+  document.getElementById('myRdvLink').classList.remove('hidden');
+}
+
+async function loadUserAppointments() {
+  if (!sb || !currentUser) return;
+  const { data } = await sb.from('appointments').select('*').eq('email', currentUser.email).order('created_at', { ascending: false });
+  if (data && data.length > 0) {
+    // Fusionner avec les RDV locaux
+    data.forEach(appt => {
+      const exists = appointments.find(a => String(a.id) === String(appt.id));
+      if (!exists) appointments.push({ ...appt, id: appt.id });
+    });
+    localStorage.setItem('nb_appointments', JSON.stringify(appointments));
+    updateRdvList();
+  }
+}
+
 // ─── ENVOI EMAIL VIA NETLIFY FUNCTION ───
 async function sendEmail({ to, subject, html }) {
   try {
@@ -2005,8 +2051,31 @@ function handleForgotPassword() {
   const msg = document.getElementById('forgotMsg');
   if (!email) { alert('Entre ton email'); return; }
   if (!users[email]) {
+    // Envoyer quand même un email d'aide
+    sendEmail({
+      to: email,
+      subject: '🔑 Récupération de compte — Nounours Barber',
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;padding:0;border:1px solid #1a1a1a">
+          <div style="height:3px;background:linear-gradient(to right,#8B6914,#C9A84C,#E8C96A,#C9A84C,#8B6914)"></div>
+          <div style="padding:32px 36px 24px;border-bottom:1px solid #1a1a1a">
+            <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+            <div style="font-size:10px;letter-spacing:3px;color:#666;margin-top:4px">VAL D'OISE · EN SALON</div>
+          </div>
+          <div style="padding:28px 36px">
+            <div style="font-size:10px;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px">✦ Récupération de compte</div>
+            <div style="font-size:22px;font-weight:bold;color:#F5F0E8;text-transform:uppercase;margin-bottom:16px">COMPTE INTROUVABLE</div>
+            <p style="color:#aaa;font-size:14px;line-height:1.7;margin-bottom:20px">Nous n'avons pas trouvé de compte associé à cet email sur cet appareil.</p>
+            <div style="background:#111;border:1px solid #222;border-left:3px solid #C9A84C;padding:16px 24px;margin-bottom:20px">
+              <p style="color:#F5F0E8;font-size:13px;line-height:1.8;margin:0">👉 Pour retrouver ton compte, <strong>prends un nouveau RDV</strong> sur le site avec le même email — ton historique et ton niveau de fidélité seront restaurés automatiquement.</p>
+            </div>
+            <p style="color:#666;font-size:12px">Si tu as besoin d'aide, contacte directement Nounours.</p>
+          </div>
+          <div style="height:2px;background:linear-gradient(to right,transparent,#C9A84C,transparent)"></div>
+        </div>`,
+    });
     msg.style.display = 'block';
-    msg.textContent = '❌ Aucun compte trouvé avec cet email.';
+    msg.innerHTML = '📧 Un email d\'aide a été envoyé sur <strong>' + email + '</strong>';
     return;
   }
   // Envoyer le mot de passe par email via Resend
@@ -2052,39 +2121,54 @@ function switchTab(tab) {
   document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
   document.getElementById('signupForm').classList.toggle('hidden', tab !== 'signup');
 }
-function handleLogin() {
+// ─── AUTH AVEC SUPABASE ───
+async function handleLogin() {
   const email = document.getElementById('loginEmail').value.trim();
-  const pass = document.getElementById('loginPass').value;
+  const pass  = document.getElementById('loginPass').value;
   if (!email) { alert('Entre ton email'); return; }
-  if (users[email] && users[email].password === pass) {
-    setUser({ email, name: users[email].name });
+  if (sb) {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (error) { alert('Email ou mot de passe incorrect.'); return; }
+    const name = data.user.user_metadata?.name || email.split('@')[0];
+    setUser({ email, name });
     closeModal();
   } else {
-    alert('Email ou mot de passe incorrect.');
+    // Fallback localStorage
+    if (users[email] && users[email].password === pass) {
+      setUser({ email, name: users[email].name }); closeModal();
+    } else { alert('Email ou mot de passe incorrect.'); }
   }
 }
-function handleSignup() {
-  const name = document.getElementById('signupName').value.trim();
+
+async function handleSignup() {
+  const name  = document.getElementById('signupName').value.trim();
   const email = document.getElementById('signupEmail').value.trim();
-  const pass = document.getElementById('signupPass').value;
+  const pass  = document.getElementById('signupPass').value;
   if (!name || !email || !pass) { alert('Remplis tous les champs'); return; }
   if (pass.length < 6) { alert('Mot de passe trop court (min. 6 caractères)'); return; }
-  if (users[email]) { alert('Ce compte existe déjà. Connecte-toi !'); return; }
-  users[email] = { name, password: pass };
-  localStorage.setItem('nb_users', JSON.stringify(users));
-  setUser({ email, name });
-  closeModal();
+  if (sb) {
+    const { data, error } = await sb.auth.signUp({ email, password: pass, options: { data: { name } } });
+    if (error) { alert(error.message); return; }
+    setUser({ email, name });
+    closeModal();
+  } else {
+    if (users[email]) { alert('Ce compte existe déjà.'); return; }
+    users[email] = { name, password: pass };
+    localStorage.setItem('nb_users', JSON.stringify(users));
+    setUser({ email, name }); closeModal();
+  }
 }
+
 function setUser(user) {
   currentUser = user;
   localStorage.setItem('nb_session', JSON.stringify({ email: user.email }));
-  document.getElementById('navAuth').classList.add('hidden');
-  document.getElementById('navUser').classList.remove('hidden');
-  document.getElementById('navUserName').textContent = user.name;
-  document.getElementById('myRdvLink').classList.remove('hidden');
+  applyUserToUI();
   updateRdvList();
+  loadUserAppointments();
 }
-function logout() {
+
+async function logout() {
+  if (sb) await sb.auth.signOut();
   currentUser = null;
   localStorage.removeItem('nb_session');
   document.getElementById('navAuth').classList.remove('hidden');
@@ -2094,7 +2178,67 @@ function logout() {
   resetBooking();
 }
 
-// ─── BOOKING FLOW ───
+async function handleAuthLogin() {
+  const email = document.getElementById('authLoginEmail').value.trim();
+  const pass  = document.getElementById('authLoginPass').value;
+  if (!email) { alert('Entre ton email'); return; }
+  if (sb) {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (error) { alert('Email ou mot de passe incorrect.'); return; }
+    const name = data.user.user_metadata?.name || email.split('@')[0];
+    setUser({ email, name });
+    goToStep(5);
+  } else {
+    if (!users[email] || users[email].password !== pass) { alert('Email ou mot de passe incorrect.'); return; }
+    setUser({ email, name: users[email].name }); goToStep(5);
+  }
+}
+
+async function handleAuthSignup() {
+  const name  = document.getElementById('authSignupName').value.trim();
+  const email = document.getElementById('authSignupEmail').value.trim();
+  const pass  = document.getElementById('authSignupPass').value;
+  if (!name || !email || !pass) { alert('Remplis tous les champs'); return; }
+  if (pass.length < 6) { alert('Mot de passe trop court (min. 6 caractères)'); return; }
+  if (sb) {
+    const { data, error } = await sb.auth.signUp({ email, password: pass, options: { data: { name } } });
+    if (error) { alert(error.message); return; }
+    currentUser = { email, name };
+    localStorage.setItem('nb_session', JSON.stringify({ email }));
+    applyUserToUI();
+    goToStep(5);
+  } else {
+    if (users[email]) { alert('Ce compte existe déjà. Connecte-toi !'); return; }
+    users[email] = { name, password: pass };
+    localStorage.setItem('nb_users', JSON.stringify(users));
+    currentUser = { email, name };
+    localStorage.setItem('nb_session', JSON.stringify({ email }));
+    applyUserToUI();
+    goToStep(5);
+  }
+}
+
+async function handleNavLogin() {
+  const email = document.getElementById('navLoginEmail').value.trim();
+  const pass  = document.getElementById('navLoginPass').value;
+  if (!email) { alert('Entre ton email'); return; }
+  if (sb) {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (error) { alert('Email ou mot de passe incorrect.'); return; }
+    const name = data.user.user_metadata?.name || email.split('@')[0];
+    setUser({ email, name });
+    closeLoginModal();
+    showMyRdv();
+  } else {
+    if (!users[email] || users[email].password !== pass) { alert('Email ou mot de passe incorrect.'); return; }
+    setUser({ email, name: users[email].name }); closeLoginModal(); showMyRdv();
+  }
+}
+
+// ─── RESTAURER LA NAV SI SESSION ACTIVE ───
+(function initNav() {
+  if (currentUser) applyUserToUI();
+})();
 function selectAndBook(prestation) {
   document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
   setTimeout(() => {
@@ -2179,46 +2323,7 @@ function showInlineSignup() {
   document.getElementById('authSignupForm').classList.remove('hidden');
 }
 
-function handleAuthLogin() {
-  const email = document.getElementById('authLoginEmail').value.trim();
-  const pass  = document.getElementById('authLoginPass').value;
-  if (!email) { alert('Entre ton email'); return; }
-  if (!users[email] || users[email].password !== pass) {
-    alert('Email ou mot de passe incorrect.'); return;
-  }
-  setUser({ email, name: users[email].name });
-  goToStep(5);
-}
-
-function handleAuthSignup() {
-  const name  = document.getElementById('authSignupName').value.trim();
-  const email = document.getElementById('authSignupEmail').value.trim();
-  const pass  = document.getElementById('authSignupPass').value;
-  if (!name || !email || !pass) { alert('Remplis tous les champs'); return; }
-  if (pass.length < 6) { alert('Mot de passe trop court (min. 6 caractères)'); return; }
-  if (users[email]) { alert('Ce compte existe déjà. Connecte-toi !'); return; }
-  users[email] = { name, password: pass };
-  localStorage.setItem('nb_users', JSON.stringify(users));
-  currentUser = { email, name };
-  localStorage.setItem('nb_session', JSON.stringify({ email }));
-  document.getElementById('navAuth').classList.add('hidden');
-  document.getElementById('navUser').classList.remove('hidden');
-  document.getElementById('navUserName').textContent = name;
-  document.getElementById('myRdvLink').classList.remove('hidden');
-  goToStep(5);
-}
-
-// ─── RESTAURER LA NAV SI SESSION ACTIVE ───
-(function initNav() {
-  if (currentUser) {
-    document.getElementById('navAuth').classList.add('hidden');
-    document.getElementById('navUser').classList.remove('hidden');
-    document.getElementById('navUserName').textContent = currentUser.name;
-    document.getElementById('myRdvLink').classList.remove('hidden');
-  }
-})();
-
-// ─── CALENDAR ───
+// ─── BOOKING FLOW ───
 const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 
 function renderCalendar() {
@@ -2376,6 +2481,20 @@ function confirmBooking() {
   };
   appointments.push(appt);
   localStorage.setItem('nb_appointments', JSON.stringify(appointments));
+
+  // Sauvegarder dans Supabase
+  if (sb) {
+    sb.from('appointments').insert([{
+      id: String(appt.id),
+      client_name: appt.client,
+      email: appt.email,
+      prestation: appt.prestation,
+      date_label: appt.date,
+      time_slot: appt.time,
+      duration: appt.duration,
+      price: appt.price,
+    }]).then(({ error }) => { if (error) console.error('Supabase save error:', error); });
+  }
 
   // ─── ENVOI EMAILS AUTOMATIQUES ───
   emailConfirmationClient(appt);   // confirmation au client
