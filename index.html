@@ -8,10 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #F5F0E8;
+    --cream: #FFFFFF;
     --black: #0A0A0A;
-    --gold: #C9A84C;
-    --gold-light: #E8C96A;
+    --gold: #F06292;
+    --gold-light: #F48FB1;
     --grey: #888;
     --grey-light: #E8E4DC;
     --radius: 4px;
@@ -93,7 +93,7 @@
   .hero-bg {
     position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(233,30,140,0.08) 0%, transparent 60%),
       linear-gradient(135deg, #0A0A0A 0%, #1a1410 100%);
   }
   .hero-lines {
@@ -200,7 +200,7 @@
     transition: transform 0.4s; transform-origin: left;
   }
   .service-card:hover::before { transform: scaleX(1); }
-  .service-card:hover { background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.2); }
+  .service-card:hover { background: rgba(233,30,140,0.05); border-color: rgba(233,30,140,0.2); }
   .service-icon { font-size: 28px; margin-bottom: 20px; }
   .service-name {
     font-family: 'Bebas Neue', sans-serif;
@@ -216,7 +216,7 @@
   /* ─── DIVIDER ─── */
   .divider {
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+    background: linear-gradient(to right, transparent, rgba(233,30,140,0.3), transparent);
     margin: 0 48px;
   }
 
@@ -228,7 +228,7 @@
   #booking::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+    background: linear-gradient(to right, transparent, rgba(233,30,140,0.3), transparent);
   }
 
   /* ─── MODAL / FLOW ─── */
@@ -291,8 +291,8 @@
     padding: 20px; cursor: pointer;
     transition: all 0.3s; position: relative;
   }
-  .prestation-card:hover { border-color: rgba(201,168,76,0.4); }
-  .prestation-card.selected { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+  .prestation-card:hover { border-color: rgba(233,30,140,0.4); }
+  .prestation-card.selected { border-color: var(--gold); background: rgba(233,30,140,0.08); }
   .prestation-card .p-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; }
   .prestation-card .p-price { color: var(--gold); font-size: 13px; margin-top: 4px; }
   .prestation-card .p-dur { font-size: 11px; color: var(--grey); }
@@ -319,7 +319,7 @@
     font-size: 13px; cursor: pointer; border: 1px solid transparent;
     transition: all 0.2s; border-radius: 2px;
   }
-  .cal-day:hover:not(.disabled):not(.empty) { border-color: rgba(201,168,76,0.4); color: var(--gold); }
+  .cal-day:hover:not(.disabled):not(.empty) { border-color: rgba(233,30,140,0.4); color: var(--gold); }
   .cal-day.selected { background: var(--gold); color: var(--black); font-weight: 500; }
   .cal-day.disabled { opacity: 0.2; cursor: not-allowed; }
   .cal-day.empty { cursor: default; }
@@ -368,8 +368,8 @@
   .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
 
   .recap-card {
-    background: rgba(201,168,76,0.06);
-    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(233,30,140,0.06);
+    border: 1px solid rgba(233,30,140,0.2);
     padding: 28px; margin-bottom: 28px;
   }
   .recap-row {
@@ -388,7 +388,7 @@
   }
   .success-icon {
     width: 80px; height: 80px; border-radius: 50%;
-    background: rgba(201,168,76,0.1); border: 1px solid var(--gold);
+    background: rgba(233,30,140,0.1); border: 1px solid var(--gold);
     display: flex; align-items: center; justify-content: center;
     font-size: 32px; margin: 0 auto 32px;
   }
@@ -447,10 +447,10 @@
   .social-slide-card::after {
     content: '';
     position: absolute; inset: 0;
-    background: rgba(201,168,76,0.04);
+    background: rgba(233,30,140,0.04);
     opacity: 0; transition: opacity 0.3s;
   }
-  .social-slide-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); }
+  .social-slide-card:hover { border-color: rgba(233,30,140,0.4); transform: translateY(-3px); }
   .social-slide-card:hover::after { opacity: 1; }
   .ssc-icon { color: var(--gold); flex-shrink: 0; }
   .ssc-info { text-align: left; flex: 1; }
@@ -468,8 +468,8 @@
   /* mini recap dans le slide social */
   .social-slide-recap {
     display: inline-flex; align-items: center; gap: 10px;
-    background: rgba(201,168,76,0.08);
-    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(233,30,140,0.08);
+    border: 1px solid rgba(233,30,140,0.2);
     padding: 10px 20px; margin-bottom: 28px;
     animation: fadeUp 0.4s ease both;
   }
@@ -487,7 +487,7 @@
   /* ─── REMINDER BADGE ─── */
   .reminder-info {
     display: flex; align-items: center; gap: 12px;
-    background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(233,30,140,0.06); border: 1px solid rgba(233,30,140,0.15);
     padding: 16px 20px; margin-top: 16px;
     font-size: 12px; color: rgba(245,240,232,0.7); line-height: 1.6;
   }
@@ -527,7 +527,7 @@
   .modal-overlay.open { display: flex; }
   .modal-box {
     background: #111;
-    border: 1px solid rgba(201,168,76,0.2);
+    border: 1px solid rgba(233,30,140,0.2);
     padding: 48px; max-width: 440px; width: 90%;
     animation: fadeUp 0.4s ease;
     position: relative;
@@ -562,7 +562,7 @@
     display: flex; justify-content: space-between; align-items: center;
     transition: border-color 0.2s;
   }
-  .rdv-item:hover { border-color: rgba(201,168,76,0.2); }
+  .rdv-item:hover { border-color: rgba(233,30,140,0.2); }
   .rdv-prestation { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; }
   .rdv-date { font-size: 12px; color: var(--grey); margin-top: 4px; }
   .rdv-badge {
@@ -599,8 +599,8 @@
   .account-name { color: var(--cream); font-weight: 500; }
 
   .notification-banner {
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(233,30,140,0.1);
+    border: 1px solid rgba(233,30,140,0.2);
     padding: 12px 20px;
     display: flex; align-items: center; gap: 12px;
     font-size: 12px; color: rgba(245,240,232,0.8);
@@ -650,7 +650,7 @@
   .social-follow::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 70%);
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(233,30,140,0.05) 0%, transparent 70%);
     pointer-events: none;
   }
   .social-follow-label {
@@ -686,7 +686,7 @@
     transition: transform 0.4s; transform-origin: center;
   }
   .social-card:hover::before { transform: scaleX(1); }
-  .social-card:hover { background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.25); transform: translateY(-4px); }
+  .social-card:hover { background: rgba(233,30,140,0.05); border-color: rgba(233,30,140,0.25); transform: translateY(-4px); }
   .social-card-icon { font-size: 32px; }
   .social-card-network {
     font-family: 'Bebas Neue', sans-serif;
@@ -738,7 +738,7 @@
   }
   .loyalty-badge {
     font-size: 26px; line-height: 1;
-    filter: drop-shadow(0 0 8px rgba(201,168,76,0.5));
+    filter: drop-shadow(0 0 8px rgba(233,30,140,0.5));
   }
   .loyalty-rank-info {}
   .loyalty-rank-name {
@@ -766,10 +766,10 @@
   }
   .loyalty-fill {
     height: 100%;
-    background: linear-gradient(to right, #8B6914, var(--gold), var(--gold-light));
+    background: linear-gradient(to right, #C2185B, var(--gold), var(--gold-light));
     transition: width 1.2s cubic-bezier(.22,1,.36,1);
     position: relative;
-    box-shadow: 0 0 10px rgba(201,168,76,0.4);
+    box-shadow: 0 0 10px rgba(233,30,140,0.4);
   }
   .loyalty-fill::after {
     content: '';
@@ -777,7 +777,7 @@
     transform: translateY(-50%);
     width: 12px; height: 12px; border-radius: 50%;
     background: var(--gold-light);
-    box-shadow: 0 0 8px rgba(232,201,106,0.8);
+    box-shadow: 0 0 8px rgba(255,77,184,0.8);
   }
 
   /* milestone dots */
@@ -792,7 +792,7 @@
   }
   .loyalty-milestone-dot.reached {
     background: var(--gold); border-color: var(--gold);
-    box-shadow: 0 0 6px rgba(201,168,76,0.6);
+    box-shadow: 0 0 6px rgba(233,30,140,0.6);
   }
 
   .loyalty-next {
@@ -837,24 +837,24 @@
     width: 300px; height: 300px;
     background: conic-gradient(
       from 0deg,
-      transparent 0deg, rgba(201,168,76,0.08) 10deg,
-      transparent 20deg, rgba(201,168,76,0.08) 30deg,
-      transparent 40deg, rgba(201,168,76,0.08) 50deg,
-      transparent 60deg, rgba(201,168,76,0.08) 70deg,
-      transparent 80deg, rgba(201,168,76,0.08) 90deg,
-      transparent 100deg, rgba(201,168,76,0.08) 110deg,
-      transparent 120deg, rgba(201,168,76,0.08) 130deg,
-      transparent 140deg, rgba(201,168,76,0.08) 150deg,
-      transparent 160deg, rgba(201,168,76,0.08) 170deg,
-      transparent 180deg, rgba(201,168,76,0.08) 190deg,
-      transparent 200deg, rgba(201,168,76,0.08) 210deg,
-      transparent 220deg, rgba(201,168,76,0.08) 230deg,
-      transparent 240deg, rgba(201,168,76,0.08) 250deg,
-      transparent 260deg, rgba(201,168,76,0.08) 270deg,
-      transparent 280deg, rgba(201,168,76,0.08) 290deg,
-      transparent 300deg, rgba(201,168,76,0.08) 310deg,
-      transparent 320deg, rgba(201,168,76,0.08) 330deg,
-      transparent 340deg, rgba(201,168,76,0.08) 350deg,
+      transparent 0deg, rgba(233,30,140,0.08) 10deg,
+      transparent 20deg, rgba(233,30,140,0.08) 30deg,
+      transparent 40deg, rgba(233,30,140,0.08) 50deg,
+      transparent 60deg, rgba(233,30,140,0.08) 70deg,
+      transparent 80deg, rgba(233,30,140,0.08) 90deg,
+      transparent 100deg, rgba(233,30,140,0.08) 110deg,
+      transparent 120deg, rgba(233,30,140,0.08) 130deg,
+      transparent 140deg, rgba(233,30,140,0.08) 150deg,
+      transparent 160deg, rgba(233,30,140,0.08) 170deg,
+      transparent 180deg, rgba(233,30,140,0.08) 190deg,
+      transparent 200deg, rgba(233,30,140,0.08) 210deg,
+      transparent 220deg, rgba(233,30,140,0.08) 230deg,
+      transparent 240deg, rgba(233,30,140,0.08) 250deg,
+      transparent 260deg, rgba(233,30,140,0.08) 270deg,
+      transparent 280deg, rgba(233,30,140,0.08) 290deg,
+      transparent 300deg, rgba(233,30,140,0.08) 310deg,
+      transparent 320deg, rgba(233,30,140,0.08) 330deg,
+      transparent 340deg, rgba(233,30,140,0.08) 350deg,
       transparent 360deg
     );
     border-radius: 50%;
@@ -866,7 +866,7 @@
   .unlock-emoji {
     font-size: 72px; display: block; margin-bottom: 20px;
     animation: bounceIn 0.8s 0.2s cubic-bezier(.34,1.56,.64,1) both;
-    filter: drop-shadow(0 0 20px rgba(201,168,76,0.7));
+    filter: drop-shadow(0 0 20px rgba(233,30,140,0.7));
   }
   @keyframes bounceIn {
     from { transform: scale(0) rotate(-10deg); opacity: 0; }
@@ -940,7 +940,7 @@
     text-decoration: none; color: var(--cream);
     transition: all 0.3s;
   }
-  .us-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-3px); background: rgba(201,168,76,0.05); }
+  .us-card:hover { border-color: rgba(233,30,140,0.4); transform: translateY(-3px); background: rgba(233,30,140,0.05); }
   .us-network { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; }
   .us-handle { font-size: 11px; color: var(--grey); }
   .us-follow { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-top: 4px; }
@@ -957,7 +957,7 @@
   .rdv-card {
     width: 100%; max-width: 420px;
     background: #0f0d0a;
-    border: 1px solid rgba(201,168,76,0.35);
+    border: 1px solid rgba(233,30,140,0.35);
     position: relative;
     animation: fadeUp 0.5s ease;
     overflow: hidden;
@@ -982,7 +982,7 @@
   .card-brand span { color: var(--gold); }
   .card-tag {
     font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--gold); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); border: 1px solid rgba(233,30,140,0.3);
     padding: 4px 10px; margin-top: 4px;
   }
 
@@ -1049,7 +1049,7 @@
     position: absolute; bottom: 20px; right: 24px;
     font-family: 'Bebas Neue', sans-serif;
     font-size: 64px; letter-spacing: 4px;
-    color: rgba(201,168,76,0.04);
+    color: rgba(233,30,140,0.04);
     pointer-events: none; line-height: 1;
     user-select: none;
   }
@@ -1112,7 +1112,7 @@
       </div>
       <button class="btn-primary" onclick="handleForgotPassword()">Envoyer mon mot de passe</button>
       <button class="btn-secondary" style="margin-top:10px" onclick="showLoginView()">← Retour</button>
-      <div id="forgotMsg" style="display:none;margin-top:16px;padding:12px 16px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);font-size:13px;color:var(--cream);text-align:center;line-height:1.6"></div>
+      <div id="forgotMsg" style="display:none;margin-top:16px;padding:12px 16px;background:rgba(233,30,140,0.08);border:1px solid rgba(233,30,140,0.2);font-size:13px;color:var(--cream);text-align:center;line-height:1.6"></div>
     </div>
   </div>
 </div>
@@ -1136,17 +1136,17 @@
     <div class="unlock-social-inner">
       <div class="us-bear">
         <svg viewBox="0 0 100 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="15" r="11" stroke="#C9A84C" stroke-width="1" fill="none"/>
-          <circle cx="24" cy="15" r="5.5" stroke="#C9A84C" stroke-width="0.6" fill="none" opacity="0.4"/>
-          <circle cx="76" cy="15" r="11" stroke="#C9A84C" stroke-width="1" fill="none"/>
-          <circle cx="76" cy="15" r="5.5" stroke="#C9A84C" stroke-width="0.6" fill="none" opacity="0.4"/>
-          <ellipse cx="50" cy="42" rx="34" ry="30" stroke="#C9A84C" stroke-width="1" fill="none"/>
-          <circle cx="39" cy="36" r="2.8" fill="#C9A84C"/>
-          <circle cx="61" cy="36" r="2.8" fill="#C9A84C"/>
+          <circle cx="24" cy="15" r="11" stroke="#F06292" stroke-width="1" fill="none"/>
+          <circle cx="24" cy="15" r="5.5" stroke="#F06292" stroke-width="0.6" fill="none" opacity="0.4"/>
+          <circle cx="76" cy="15" r="11" stroke="#F06292" stroke-width="1" fill="none"/>
+          <circle cx="76" cy="15" r="5.5" stroke="#F06292" stroke-width="0.6" fill="none" opacity="0.4"/>
+          <ellipse cx="50" cy="42" rx="34" ry="30" stroke="#F06292" stroke-width="1" fill="none"/>
+          <circle cx="39" cy="36" r="2.8" fill="#F06292"/>
+          <circle cx="61" cy="36" r="2.8" fill="#F06292"/>
           <circle cx="40.2" cy="34.8" r="1" fill="rgba(245,240,232,0.75)"/>
           <circle cx="62.2" cy="34.8" r="1" fill="rgba(245,240,232,0.75)"/>
-          <path d="M44 47 Q50 42 56 47 Q53 51 47 51 Z" fill="#C9A84C" opacity="0.8"/>
-          <path d="M42 55 Q50 63 58 55" stroke="#C9A84C" stroke-width="0.9" stroke-linecap="round" fill="none" opacity="0.6"/>
+          <path d="M44 47 Q50 42 56 47 Q53 51 47 51 Z" fill="#F06292" opacity="0.8"/>
+          <path d="M42 55 Q50 63 58 55" stroke="#F06292" stroke-width="0.9" stroke-linecap="round" fill="none" opacity="0.6"/>
         </svg>
       </div>
       <div class="us-label">✦ Reste dans la boucle</div>
@@ -1154,13 +1154,13 @@
       <p class="us-sub">Transformations, coulisses du salon, conseils style… Rejoins la communauté et ne rate rien entre deux coupes.</p>
       <div class="us-cards">
         <a class="us-card" href="https://www.instagram.com/nounours_barber_?igsh=emk2YzZtdGJ4Mjds&utm_source=qr" target="_blank" rel="noopener">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#F06292"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           <span class="us-network">Instagram</span>
           <span class="us-handle">@nounours_barber_</span>
           <span class="us-follow">Suivre →</span>
         </a>
         <a class="us-card" href="https://www.tiktok.com/@nounours_barber_?_r=1&_t=ZN-94lh5jEd4gI" target="_blank" rel="noopener">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9A84C"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#F06292"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
           <span class="us-network">TikTok</span>
           <span class="us-handle">@nounours_barber_</span>
           <span class="us-follow">Suivre →</span>
@@ -1296,23 +1296,23 @@
       <div class="hero-bear-above">
         <svg viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- oreille gauche -->
-          <circle cx="38" cy="24" r="18" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
-          <circle cx="38" cy="24" r="9" stroke="#C9A84C" stroke-width="0.7" fill="none" opacity="0.45"/>
+          <circle cx="38" cy="24" r="18" stroke="#F06292" stroke-width="1.2" fill="none"/>
+          <circle cx="38" cy="24" r="9" stroke="#F06292" stroke-width="0.7" fill="none" opacity="0.45"/>
           <!-- oreille droite -->
-          <circle cx="122" cy="24" r="18" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
-          <circle cx="122" cy="24" r="9" stroke="#C9A84C" stroke-width="0.7" fill="none" opacity="0.45"/>
+          <circle cx="122" cy="24" r="18" stroke="#F06292" stroke-width="1.2" fill="none"/>
+          <circle cx="122" cy="24" r="9" stroke="#F06292" stroke-width="0.7" fill="none" opacity="0.45"/>
           <!-- tête -->
-          <ellipse cx="80" cy="66" rx="54" ry="50" stroke="#C9A84C" stroke-width="1.2" fill="none"/>
+          <ellipse cx="80" cy="66" rx="54" ry="50" stroke="#F06292" stroke-width="1.2" fill="none"/>
           <!-- yeux -->
-          <circle cx="62" cy="58" r="4" fill="#C9A84C"/>
-          <circle cx="98" cy="58" r="4" fill="#C9A84C"/>
+          <circle cx="62" cy="58" r="4" fill="#F06292"/>
+          <circle cx="98" cy="58" r="4" fill="#F06292"/>
           <!-- reflets yeux -->
           <circle cx="64" cy="56" r="1.4" fill="rgba(245,240,232,0.75)"/>
           <circle cx="100" cy="56" r="1.4" fill="rgba(245,240,232,0.75)"/>
           <!-- nez -->
-          <path d="M73 73 Q80 67 87 73 Q83 79 77 79 Z" fill="#C9A84C" opacity="0.85"/>
+          <path d="M73 73 Q80 67 87 73 Q83 79 77 79 Z" fill="#F06292" opacity="0.85"/>
           <!-- bouche -->
-          <path d="M71 82 Q80 91 89 82" stroke="#C9A84C" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
+          <path d="M71 82 Q80 91 89 82" stroke="#F06292" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
         </svg>
       </div>
       <div class="hero-label">✦ Val d'Oise · Salon de coiffure</div>
@@ -1385,22 +1385,27 @@
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;max-width:680px">
     <div style="background:rgba(245,240,232,0.03);border:1px solid rgba(245,240,232,0.06);padding:32px">
       <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">Mardi → Samedi</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;line-height:1">21H00<br><span style="color:var(--gold)">ET +</span></div>
-      <div style="font-size:13px;color:var(--grey);margin-top:12px;line-height:1.7">Disponible en soirée.<br>En salon uniquement.</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;line-height:1">12H<span style="color:var(--gold)">→</span>20H<span style="color:var(--gold);font-size:0.6em;vertical-align:super">+</span></div>
+      <div style="font-size:13px;color:var(--grey);margin-top:12px;line-height:1.7">En salon uniquement.<br>RDV via le site.</div>
     </div>
     <div style="background:rgba(245,240,232,0.03);border:1px solid rgba(245,240,232,0.06);padding:32px">
       <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">Dimanche</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;line-height:1">12H<span style="color:var(--gold)">→</span>20H</div>
-      <div style="font-size:13px;color:var(--grey);margin-top:12px;line-height:1.7">Toute la journée.<br>En salon uniquement.</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;line-height:1">FERMÉ</div>
+      <div style="font-size:13px;color:var(--grey);margin-top:12px;line-height:1.7">Fermé le dimanche.<br>Pas de RDV disponible.</div>
     </div>
-    <div style="background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.15);padding:32px">
+    <div style="background:rgba(233,30,140,0.04);border:1px solid rgba(233,30,140,0.15);padding:32px">
       <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">Zone</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;line-height:1.2">VAL D'OISE<br><span style="color:var(--gold)">95</span></div>
       <div style="font-size:13px;color:var(--grey);margin-top:12px;line-height:1.7">Rendez-vous en salon.<br>Val d'Oise.</div>
     </div>
   </div>
   <div style="margin-top:12px;font-size:11px;color:var(--grey);letter-spacing:1px">
-    ✕ Fermé le lundi
+    ✕ Fermé le lundi et le dimanche
+  </div>
+  <div style="margin-top:16px;background:rgba(240,98,146,0.08);border:1px solid rgba(240,98,146,0.2);border-left:3px solid var(--gold);padding:14px 20px;max-width:680px">
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">✦ Info tarif</div>
+    <div style="font-size:14px;color:#FFFFFF;font-weight:500">+5€ sur toutes les prestations après 20h</div>
+    <div style="font-size:12px;color:var(--grey);margin-top:4px;line-height:1.6">Pour les rendez-vous en dehors des horaires du salon, un supplément de 5€ s'applique sur toutes les prestations.</div>
   </div>
 </section>
 
@@ -1506,7 +1511,7 @@
         <p style="font-size:13px;color:var(--grey);margin-bottom:28px;line-height:1.7">Ton créneau est réservé ✦ Crée ton compte en 30 secondes pour confirmer et recevoir tes rappels.</p>
 
         <!-- Mini récap du RDV choisi -->
-        <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);padding:16px 20px;margin-bottom:28px;display:flex;gap:20px;flex-wrap:wrap;">
+        <div style="background:rgba(233,30,140,0.06);border:1px solid rgba(233,30,140,0.15);padding:16px 20px;margin-bottom:28px;display:flex;gap:20px;flex-wrap:wrap;">
           <div style="font-size:11px;letter-spacing:1px;color:var(--grey)">PRESTATION<br><span style="font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--cream);letter-spacing:1px" id="auth-recap-presta">—</span></div>
           <div style="font-size:11px;letter-spacing:1px;color:var(--grey)">DATE<br><span style="font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--cream);letter-spacing:1px" id="auth-recap-date">—</span></div>
           <div style="font-size:11px;letter-spacing:1px;color:var(--grey)">HEURE<br><span style="font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--gold);letter-spacing:1px" id="auth-recap-heure">—</span></div>
@@ -1612,17 +1617,17 @@
           <!-- ours mini centré -->
           <div class="social-slide-bear">
             <svg viewBox="0 0 100 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="24" cy="15" r="11" stroke="#C9A84C" stroke-width="1" fill="none"/>
-              <circle cx="24" cy="15" r="5.5" stroke="#C9A84C" stroke-width="0.6" fill="none" opacity="0.4"/>
-              <circle cx="76" cy="15" r="11" stroke="#C9A84C" stroke-width="1" fill="none"/>
-              <circle cx="76" cy="15" r="5.5" stroke="#C9A84C" stroke-width="0.6" fill="none" opacity="0.4"/>
-              <ellipse cx="50" cy="42" rx="34" ry="30" stroke="#C9A84C" stroke-width="1" fill="none"/>
-              <circle cx="39" cy="36" r="2.8" fill="#C9A84C"/>
-              <circle cx="61" cy="36" r="2.8" fill="#C9A84C"/>
+              <circle cx="24" cy="15" r="11" stroke="#F06292" stroke-width="1" fill="none"/>
+              <circle cx="24" cy="15" r="5.5" stroke="#F06292" stroke-width="0.6" fill="none" opacity="0.4"/>
+              <circle cx="76" cy="15" r="11" stroke="#F06292" stroke-width="1" fill="none"/>
+              <circle cx="76" cy="15" r="5.5" stroke="#F06292" stroke-width="0.6" fill="none" opacity="0.4"/>
+              <ellipse cx="50" cy="42" rx="34" ry="30" stroke="#F06292" stroke-width="1" fill="none"/>
+              <circle cx="39" cy="36" r="2.8" fill="#F06292"/>
+              <circle cx="61" cy="36" r="2.8" fill="#F06292"/>
               <circle cx="40.2" cy="34.8" r="1" fill="rgba(245,240,232,0.75)"/>
               <circle cx="62.2" cy="34.8" r="1" fill="rgba(245,240,232,0.75)"/>
-              <path d="M44 47 Q50 42 56 47 Q53 51 47 51 Z" fill="#C9A84C" opacity="0.8"/>
-              <path d="M42 55 Q50 63 58 55" stroke="#C9A84C" stroke-width="0.9" stroke-linecap="round" fill="none" opacity="0.6"/>
+              <path d="M44 47 Q50 42 56 47 Q53 51 47 51 Z" fill="#F06292" opacity="0.8"/>
+              <path d="M42 55 Q50 63 58 55" stroke="#F06292" stroke-width="0.9" stroke-linecap="round" fill="none" opacity="0.6"/>
             </svg>
           </div>
 
@@ -1741,7 +1746,7 @@
   </div>
   <div style="text-align:center">
     <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Disponible</div>
-    <div style="font-size:12px;color:var(--grey);line-height:1.8">Mar → Sam · 21h et +<br>Dimanche · 12h → 20h</div>
+    <div style="font-size:12px;color:var(--grey);line-height:1.8">Mar → Sam · 12h → 20h+</div>
   </div>
   <div style="text-align:right">
     <div class="footer-copy">© 2025 Nounours Barber</div>
@@ -1841,19 +1846,19 @@ function emailConfirmationClient(appt) {
       <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#0A0A0A;padding:0;border:1px solid #1a1a1a">
 
         <!-- Header barre dorée -->
-        <div style="height:3px;background:linear-gradient(to right,#8B6914,#C9A84C,#E8C96A,#C9A84C,#8B6914)"></div>
+        <div style="height:3px;background:linear-gradient(to right,#C2185B,#F06292,#F48FB1,#F06292,#C2185B)"></div>
 
         <!-- Logo -->
         <div style="padding:32px 36px 24px;border-bottom:1px solid #1a1a1a">
-          <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#FFFFFF">NOUNOURS<span style="color:#F06292">.</span></div>
           <div style="font-size:10px;letter-spacing:3px;color:#666;margin-top:4px;text-transform:uppercase">Val d'Oise · En Salon</div>
         </div>
 
         <!-- Titre -->
         <div style="padding:28px 36px 0">
-          <div style="font-size:10px;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px">✦ Confirmation de rendez-vous</div>
-          <div style="font-size:26px;font-weight:bold;letter-spacing:2px;color:#F5F0E8;text-transform:uppercase">C'EST CONFIRMÉ !</div>
-          <p style="color:#888;font-size:14px;line-height:1.7;margin-top:10px">Bonjour <strong style="color:#F5F0E8">${appt.client}</strong>, ton rendez-vous est bien enregistré. On t'attend 💈</p>
+          <div style="font-size:10px;letter-spacing:3px;color:#F06292;text-transform:uppercase;margin-bottom:10px">✦ Confirmation de rendez-vous</div>
+          <div style="font-size:26px;font-weight:bold;letter-spacing:2px;color:#FFFFFF;text-transform:uppercase">C'EST CONFIRMÉ !</div>
+          <p style="color:#888;font-size:14px;line-height:1.7;margin-top:10px">Bonjour <strong style="color:#FFFFFF">${appt.client}</strong>, ton rendez-vous est bien enregistré. On t'attend 💈</p>
         </div>
 
         <!-- Carte RDV -->
@@ -1862,8 +1867,8 @@ function emailConfirmationClient(appt) {
           <!-- Prestation highlight -->
           <div style="padding:20px 24px;border-bottom:1px solid #1a1a1a;background:#141414">
             <div style="font-size:10px;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:6px">Prestation</div>
-            <div style="font-size:22px;font-weight:bold;letter-spacing:2px;color:#C9A84C;text-transform:uppercase">${appt.prestation}</div>
-            <div style="font-size:16px;color:#F5F0E8;font-style:italic;margin-top:4px">${appt.price}</div>
+            <div style="font-size:22px;font-weight:bold;letter-spacing:2px;color:#F06292;text-transform:uppercase">${appt.prestation}</div>
+            <div style="font-size:16px;color:#FFFFFF;font-style:italic;margin-top:4px">${appt.price}</div>
           </div>
 
           <!-- Infos en grille -->
@@ -1872,21 +1877,21 @@ function emailConfirmationClient(appt) {
               <tr>
                 <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a;width:40%">
                   <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Date</div>
-                  <div style="font-size:14px;color:#F5F0E8;font-weight:bold">${appt.date}</div>
+                  <div style="font-size:14px;color:#FFFFFF;font-weight:bold">${appt.date}</div>
                 </td>
                 <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a;border-left:1px solid #1a1a1a">
                   <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Heure</div>
-                  <div style="font-size:20px;color:#C9A84C;font-weight:bold">${appt.time}</div>
+                  <div style="font-size:20px;color:#F06292;font-weight:bold">${appt.time}</div>
                 </td>
               </tr>
               <tr>
                 <td style="padding:14px 24px">
                   <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Durée estimée</div>
-                  <div style="font-size:14px;color:#F5F0E8">${appt.duration}</div>
+                  <div style="font-size:14px;color:#FFFFFF">${appt.duration}</div>
                 </td>
                 <td style="padding:14px 24px;border-left:1px solid #1a1a1a">
                   <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Format</div>
-                  <div style="font-size:14px;color:#F5F0E8">En salon</div>
+                  <div style="font-size:14px;color:#FFFFFF">En salon</div>
                 </td>
               </tr>
             </table>
@@ -1894,16 +1899,16 @@ function emailConfirmationClient(appt) {
         </div>
 
         <!-- Rappel -->
-        <div style="margin:0 36px 28px;background:#0f0f0f;border:1px solid #1a1a1a;border-left:3px solid #C9A84C;padding:14px 20px">
-          <div style="font-size:13px;color:#aaa;line-height:1.7">🔔 Tu recevras un <strong style="color:#F5F0E8">rappel automatique 24h avant</strong> ton rendez-vous.</div>
+        <div style="margin:0 36px 28px;background:#0f0f0f;border:1px solid #1a1a1a;border-left:3px solid #F06292;padding:14px 20px">
+          <div style="font-size:13px;color:#aaa;line-height:1.7">🔔 Tu recevras un <strong style="color:#FFFFFF">rappel automatique 24h avant</strong> ton rendez-vous.</div>
         </div>
 
         <!-- Footer -->
         <div style="padding:20px 36px;border-top:1px solid #1a1a1a;display:flex;justify-content:space-between;align-items:center">
-          <div style="font-size:12px;font-weight:bold;letter-spacing:3px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:12px;font-weight:bold;letter-spacing:3px;color:#FFFFFF">NOUNOURS<span style="color:#F06292">.</span></div>
           <div style="font-size:11px;color:#444">Val d'Oise · 2025</div>
         </div>
-        <div style="height:2px;background:linear-gradient(to right,transparent,#C9A84C,transparent)"></div>
+        <div style="height:2px;background:linear-gradient(to right,transparent,#F06292,transparent)"></div>
       </div>`,
   });
 }
@@ -1916,16 +1921,16 @@ function emailNotificationOwner(appt) {
       <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#0A0A0A;padding:0;border:1px solid #1a1a1a">
 
         <!-- Header -->
-        <div style="height:3px;background:linear-gradient(to right,#8B6914,#C9A84C,#E8C96A,#C9A84C,#8B6914)"></div>
+        <div style="height:3px;background:linear-gradient(to right,#C2185B,#F06292,#F48FB1,#F06292,#C2185B)"></div>
 
         <div style="padding:32px 36px 24px;border-bottom:1px solid #1a1a1a">
-          <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#FFFFFF">NOUNOURS<span style="color:#F06292">.</span></div>
           <div style="font-size:10px;letter-spacing:3px;color:#666;margin-top:4px">NOTIFICATION · NOUVEAU RDV</div>
         </div>
 
         <div style="padding:28px 36px 0">
-          <div style="font-size:10px;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px">✦ Nouvelle réservation</div>
-          <div style="font-size:26px;font-weight:bold;letter-spacing:2px;color:#F5F0E8;text-transform:uppercase">NOUVEAU RDV !</div>
+          <div style="font-size:10px;letter-spacing:3px;color:#F06292;text-transform:uppercase;margin-bottom:10px">✦ Nouvelle réservation</div>
+          <div style="font-size:26px;font-weight:bold;letter-spacing:2px;color:#FFFFFF;text-transform:uppercase">NOUVEAU RDV !</div>
           <p style="color:#888;font-size:14px;line-height:1.7;margin-top:10px">Un client vient de réserver sur ton site.</p>
         </div>
 
@@ -1933,48 +1938,48 @@ function emailNotificationOwner(appt) {
         <div style="margin:24px 36px 0;background:#111;border:1px solid #222">
           <div style="padding:16px 24px;border-bottom:1px solid #1a1a1a;background:#141414">
             <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Client</div>
-            <div style="font-size:20px;font-weight:bold;color:#F5F0E8;text-transform:uppercase">${appt.client}</div>
-            <div style="font-size:13px;color:#C9A84C;margin-top:2px">${appt.email}</div>
+            <div style="font-size:20px;font-weight:bold;color:#FFFFFF;text-transform:uppercase">${appt.client}</div>
+            <div style="font-size:13px;color:#F06292;margin-top:2px">${appt.email}</div>
           </div>
           <table style="width:100%;border-collapse:collapse">
             <tr>
               <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a">
                 <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Prestation</div>
-                <div style="font-size:15px;color:#C9A84C;font-weight:bold">${appt.prestation}</div>
+                <div style="font-size:15px;color:#F06292;font-weight:bold">${appt.prestation}</div>
               </td>
               <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a;border-left:1px solid #1a1a1a">
                 <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Prix</div>
-                <div style="font-size:15px;color:#C9A84C;font-weight:bold">${appt.price}</div>
+                <div style="font-size:15px;color:#F06292;font-weight:bold">${appt.price}</div>
               </td>
             </tr>
             <tr>
               <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a">
                 <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Date</div>
-                <div style="font-size:14px;color:#F5F0E8;font-weight:bold">${appt.date}</div>
+                <div style="font-size:14px;color:#FFFFFF;font-weight:bold">${appt.date}</div>
               </td>
               <td style="padding:14px 24px;border-bottom:1px solid #1a1a1a;border-left:1px solid #1a1a1a">
                 <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Heure</div>
-                <div style="font-size:20px;color:#C9A84C;font-weight:bold">${appt.time}</div>
+                <div style="font-size:20px;color:#F06292;font-weight:bold">${appt.time}</div>
               </td>
             </tr>
             <tr>
               <td style="padding:14px 24px">
                 <div style="font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:4px">Durée</div>
-                <div style="font-size:14px;color:#F5F0E8">${appt.duration}</div>
+                <div style="font-size:14px;color:#FFFFFF">${appt.duration}</div>
               </td>
             </tr>
           </table>
         </div>
 
-        <div style="margin:20px 36px 28px;background:#0f0f0f;border:1px solid #1a1a1a;border-left:3px solid #C9A84C;padding:14px 20px">
+        <div style="margin:20px 36px 28px;background:#0f0f0f;border:1px solid #1a1a1a;border-left:3px solid #F06292;padding:14px 20px">
           <div style="font-size:13px;color:#aaa">📅 Pense à bloquer ce créneau dans ton agenda.</div>
         </div>
 
         <div style="padding:20px 36px;border-top:1px solid #1a1a1a">
-          <div style="font-size:12px;font-weight:bold;letter-spacing:3px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:12px;font-weight:bold;letter-spacing:3px;color:#FFFFFF">NOUNOURS<span style="color:#F06292">.</span></div>
           <div style="font-size:11px;color:#444;margin-top:4px">Notification automatique · Val d'Oise</div>
         </div>
-        <div style="height:2px;background:linear-gradient(to right,transparent,#C9A84C,transparent)"></div>
+        <div style="height:2px;background:linear-gradient(to right,transparent,#F06292,transparent)"></div>
       </div>`,
   });
 }
@@ -2057,21 +2062,21 @@ function handleForgotPassword() {
       subject: '🔑 Récupération de compte — Nounours Barber',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;padding:0;border:1px solid #1a1a1a">
-          <div style="height:3px;background:linear-gradient(to right,#8B6914,#C9A84C,#E8C96A,#C9A84C,#8B6914)"></div>
+          <div style="height:3px;background:linear-gradient(to right,#C2185B,#F06292,#F48FB1,#F06292,#C2185B)"></div>
           <div style="padding:32px 36px 24px;border-bottom:1px solid #1a1a1a">
-            <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+            <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#FFFFFF">NOUNOURS<span style="color:#F06292">.</span></div>
             <div style="font-size:10px;letter-spacing:3px;color:#666;margin-top:4px">VAL D'OISE · EN SALON</div>
           </div>
           <div style="padding:28px 36px">
-            <div style="font-size:10px;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px">✦ Récupération de compte</div>
-            <div style="font-size:22px;font-weight:bold;color:#F5F0E8;text-transform:uppercase;margin-bottom:16px">COMPTE INTROUVABLE</div>
+            <div style="font-size:10px;letter-spacing:3px;color:#F06292;text-transform:uppercase;margin-bottom:10px">✦ Récupération de compte</div>
+            <div style="font-size:22px;font-weight:bold;color:#FFFFFF;text-transform:uppercase;margin-bottom:16px">COMPTE INTROUVABLE</div>
             <p style="color:#aaa;font-size:14px;line-height:1.7;margin-bottom:20px">Nous n'avons pas trouvé de compte associé à cet email sur cet appareil.</p>
-            <div style="background:#111;border:1px solid #222;border-left:3px solid #C9A84C;padding:16px 24px;margin-bottom:20px">
-              <p style="color:#F5F0E8;font-size:13px;line-height:1.8;margin:0">👉 Pour retrouver ton compte, <strong>prends un nouveau RDV</strong> sur le site avec le même email — ton historique et ton niveau de fidélité seront restaurés automatiquement.</p>
+            <div style="background:#111;border:1px solid #222;border-left:3px solid #F06292;padding:16px 24px;margin-bottom:20px">
+              <p style="color:#FFFFFF;font-size:13px;line-height:1.8;margin:0">👉 Pour retrouver ton compte, <strong>prends un nouveau RDV</strong> sur le site avec le même email — ton historique et ton niveau de fidélité seront restaurés automatiquement.</p>
             </div>
             <p style="color:#666;font-size:12px">Si tu as besoin d'aide, contacte directement Nounours.</p>
           </div>
-          <div style="height:2px;background:linear-gradient(to right,transparent,#C9A84C,transparent)"></div>
+          <div style="height:2px;background:linear-gradient(to right,transparent,#F06292,transparent)"></div>
         </div>`,
     });
     msg.style.display = 'block';
@@ -2084,25 +2089,25 @@ function handleForgotPassword() {
     subject: '🔑 Ton mot de passe Nounours Barber',
     html: `
       <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;padding:0;border:1px solid #1a1a1a">
-        <div style="height:3px;background:linear-gradient(to right,#8B6914,#C9A84C,#E8C96A,#C9A84C,#8B6914)"></div>
+        <div style="height:3px;background:linear-gradient(to right,#C2185B,#F06292,#F48FB1,#F06292,#C2185B)"></div>
         <div style="padding:32px 36px 24px;border-bottom:1px solid #1a1a1a">
-          <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#FFFFFF">NOUNOURS<span style="color:#F06292">.</span></div>
           <div style="font-size:10px;letter-spacing:3px;color:#666;margin-top:4px">VAL D'OISE · EN SALON</div>
         </div>
         <div style="padding:28px 36px">
-          <div style="font-size:10px;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px">✦ Récupération de compte</div>
-          <div style="font-size:22px;font-weight:bold;letter-spacing:2px;color:#F5F0E8;text-transform:uppercase;margin-bottom:16px">TON MOT DE PASSE</div>
-          <p style="color:#aaa;font-size:14px;line-height:1.7;margin-bottom:24px">Bonjour <strong style="color:#F5F0E8">${users[email].name}</strong>, voici ton mot de passe :</p>
-          <div style="background:#111;border:1px solid #222;border-left:3px solid #C9A84C;padding:16px 24px;margin-bottom:24px">
+          <div style="font-size:10px;letter-spacing:3px;color:#F06292;text-transform:uppercase;margin-bottom:10px">✦ Récupération de compte</div>
+          <div style="font-size:22px;font-weight:bold;letter-spacing:2px;color:#FFFFFF;text-transform:uppercase;margin-bottom:16px">TON MOT DE PASSE</div>
+          <p style="color:#aaa;font-size:14px;line-height:1.7;margin-bottom:24px">Bonjour <strong style="color:#FFFFFF">${users[email].name}</strong>, voici ton mot de passe :</p>
+          <div style="background:#111;border:1px solid #222;border-left:3px solid #F06292;padding:16px 24px;margin-bottom:24px">
             <div style="font-size:10px;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:8px">Mot de passe</div>
-            <div style="font-size:20px;color:#C9A84C;font-weight:bold;letter-spacing:2px">${users[email].password}</div>
+            <div style="font-size:20px;color:#F06292;font-weight:bold;letter-spacing:2px">${users[email].password}</div>
           </div>
           <p style="color:#666;font-size:12px;line-height:1.7">Par mesure de sécurité, pense à le noter quelque part de sûr.</p>
         </div>
         <div style="padding:20px 36px;border-top:1px solid #1a1a1a">
-          <div style="font-size:12px;font-weight:bold;letter-spacing:3px;color:#F5F0E8">NOUNOURS<span style="color:#C9A84C">.</span></div>
+          <div style="font-size:12px;font-weight:bold;letter-spacing:3px;color:#FFFFFF">NOUNOURS<span style="color:#F06292">.</span></div>
         </div>
-        <div style="height:2px;background:linear-gradient(to right,transparent,#C9A84C,transparent)"></div>
+        <div style="height:2px;background:linear-gradient(to right,transparent,#F06292,transparent)"></div>
       </div>`,
   });
   msg.style.display = 'block';
@@ -2348,7 +2353,8 @@ function renderCalendar() {
     const isToday = date.toDateString() === today.toDateString();
     const isPast = date < today && !isToday;
     const isMonday = date.getDay() === 1;
-    if (isPast || isMonday) {
+    const isSunday = date.getDay() === 0;
+    if (isPast || isMonday || isSunday) {
       el.classList.add('disabled');
     } else {
       if (isToday) el.classList.add('today');
@@ -2379,15 +2385,11 @@ function nextMonth() {
 }
 
 // ─── TIME SLOTS ───
-// Mardi–Samedi : soirée à partir de 21h
-// Dimanche : 12h–20h
-const eveningSlots = ['21:00','21:30','22:00','22:30','23:00','23:30'];
-const sundaySlots  = ['12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
+// Tous les jours dispo (mar-sam) : 12h → 23h30
+const allDaySlots = ['12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00','22:30','23:00','23:30'];
 
 function getSlotsForDate(dateKey) {
-  const parts = dateKey.split('-');
-  const d = new Date(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
-  return d.getDay() === 0 ? sundaySlots : eveningSlots;
+  return allDaySlots;
 }
 
 // Convert "HH:MM" to minutes since midnight
@@ -2436,7 +2438,11 @@ function renderTimeSlots() {
     const free = isSlotFree(slot, taken, durationMin, allSlots);
     const el = document.createElement('div');
     el.className = 'time-slot';
-    el.textContent = slot;
+    const hour = parseInt(slot.split(':')[0]);
+    const isLate = hour >= 20;
+    el.innerHTML = isLate
+      ? `${slot}<span style="display:block;font-size:9px;color:var(--gold);letter-spacing:1px;margin-top:2px">+5€</span>`
+      : slot;
     if (!free) {
       el.classList.add('taken');
     } else {
@@ -2452,6 +2458,22 @@ function selectTime(slot, el) {
   el.classList.add('selected');
   booking.time = slot;
   document.getElementById('step3Next').disabled = false;
+
+  // Avertissement +5€ après 20h
+  let warn = document.getElementById('lateWarning');
+  const hour = parseInt(slot.split(':')[0]);
+  if (hour >= 20) {
+    if (!warn) {
+      warn = document.createElement('div');
+      warn.id = 'lateWarning';
+      warn.style.cssText = 'margin-top:14px;background:rgba(240,98,146,0.08);border:1px solid rgba(240,98,146,0.2);border-left:3px solid var(--gold);padding:12px 16px;font-size:12px;color:#FFFFFF;line-height:1.6';
+      warn.innerHTML = '⏰ <strong>+5€ supplément</strong> — Ce créneau est après 20h. Un supplément de 5€ s\'applique sur ta prestation.';
+      document.getElementById('timeGrid').after(warn);
+    }
+    warn.style.display = 'block';
+  } else {
+    if (warn) warn.style.display = 'none';
+  }
 }
 
 // ─── RECAP ───
@@ -2685,7 +2707,7 @@ function spawnParticles() {
     const dist = 120 + Math.random() * 280;
     const tx = Math.cos(angle * Math.PI / 180) * dist;
     const ty = Math.sin(angle * Math.PI / 180) * dist;
-    const colors = ['#C9A84C','#E8C96A','#fff','#F5F0E8','#a07828'];
+    const colors = ['#F06292','#F48FB1','#fff','#FFFFFF','#a07828'];
     p.style.cssText = `
       left: ${cx}px; top: ${cy}px;
       background: ${colors[Math.floor(Math.random()*colors.length)]};
@@ -2809,12 +2831,12 @@ confirmBooking = function() {
       sendEmail({
         to: appt.email,
         subject: `🔔 Rappel — Ton RDV chez Nounours demain !`,
-        html: `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;color:#F5F0E8;padding:32px">
-          <h2 style="color:#C9A84C;letter-spacing:3px;font-size:22px;margin-bottom:4px">NOUNOURS BARBER</h2>
+        html: `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#0A0A0A;color:#FFFFFF;padding:32px">
+          <h2 style="color:#F06292;letter-spacing:3px;font-size:22px;margin-bottom:4px">NOUNOURS BARBER</h2>
           <p style="color:#888;font-size:11px;letter-spacing:2px;margin-bottom:28px">VAL D'OISE · EN SALON</p>
           <p style="font-size:15px">Hey <strong>${appt.client}</strong> 👋</p>
-          <p style="color:#aaa;line-height:1.7">Petit rappel — tu passes <strong style="color:#F5F0E8">demain</strong> chez Nounours !</p>
-          <p style="font-size:20px;color:#C9A84C;font-weight:bold;margin:20px 0">${appt.prestation} · ${appt.time}</p>
+          <p style="color:#aaa;line-height:1.7">Petit rappel — tu passes <strong style="color:#FFFFFF">demain</strong> chez Nounours !</p>
+          <p style="font-size:20px;color:#F06292;font-weight:bold;margin:20px 0">${appt.prestation} · ${appt.time}</p>
           <p style="color:#aaa;font-size:13px">Viens les cheveux propres, on s'occupe du reste 😄</p>
           <p style="color:#555;font-size:11px;margin-top:32px;border-top:1px solid #1a1a1a;padding-top:16px">— Nounours Barber · Val d'Oise</p>
         </div>`,
@@ -2831,18 +2853,18 @@ confirmBooking = function() {
     if (todayAppts.length > 0) {
       const rows = todayAppts.map(a => `
         <tr>
-          <td style="padding:10px 14px;border:1px solid #222;color:#C9A84C;font-weight:bold">${a.time}</td>
+          <td style="padding:10px 14px;border:1px solid #222;color:#F06292;font-weight:bold">${a.time}</td>
           <td style="padding:10px 14px;border:1px solid #222">${a.client}</td>
           <td style="padding:10px 14px;border:1px solid #222;color:#aaa">${a.prestation}</td>
-          <td style="padding:10px 14px;border:1px solid #222;color:#C9A84C">${a.price}</td>
+          <td style="padding:10px 14px;border:1px solid #222;color:#F06292">${a.price}</td>
         </tr>`).join('');
       sendEmail({
         to: OWNER_EMAIL,
         subject: `📅 Tes RDV du jour — ${dateLabel(today)}`,
-        html: `<div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#0A0A0A;color:#F5F0E8;padding:32px">
-          <h2 style="color:#C9A84C;letter-spacing:3px;font-size:22px;margin-bottom:4px">RÉSUMÉ DU JOUR ✦</h2>
+        html: `<div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#0A0A0A;color:#FFFFFF;padding:32px">
+          <h2 style="color:#F06292;letter-spacing:3px;font-size:22px;margin-bottom:4px">RÉSUMÉ DU JOUR ✦</h2>
           <p style="color:#888;font-size:11px;letter-spacing:2px;margin-bottom:28px">${dateLabel(today).toUpperCase()}</p>
-          <p style="color:#aaa">Bonne journée Nounours ! Tu as <strong style="color:#F5F0E8">${todayAppts.length} RDV</strong> aujourd'hui :</p>
+          <p style="color:#aaa">Bonne journée Nounours ! Tu as <strong style="color:#FFFFFF">${todayAppts.length} RDV</strong> aujourd'hui :</p>
           <table style="width:100%;border-collapse:collapse;margin:20px 0">
             <tr style="background:#111">
               <th style="padding:10px 14px;border:1px solid #222;color:#888;font-size:11px;text-transform:uppercase;text-align:left">Heure</th>
