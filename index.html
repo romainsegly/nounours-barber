@@ -1268,7 +1268,7 @@
     <li><a href="#services">Prestations</a></li>
     <li><a href="#infos">Horaires</a></li>
     <li><a href="#booking">Réserver</a></li>
-    <li><a href="#rdv" id="myRdvLink" class="hidden">Mes RDV</a></li>
+    <li><a href="#rdv" id="myRdvLink" class="hidden" onclick="showMyRdv()">Mes RDV</a></li>
   </ul>
   <div id="navAuth">
     <button class="nav-login-btn" onclick="openLoginModal()">
@@ -1282,7 +1282,10 @@
   <div id="navUser" class="hidden account-indicator">
     <div class="account-dot"></div>
     <span class="account-name" id="navUserName"></span>
-    <button onclick="logout()" style="background:none;border:none;color:var(--grey);cursor:pointer;font-size:12px;margin-left:8px">✕</button>
+    <button class="nav-login-btn" onclick="showMyRdv()" style="margin-left:10px;font-size:10px;padding:6px 12px">
+      Mes RDV
+    </button>
+    <button onclick="logout()" style="background:none;border:none;color:var(--grey);cursor:pointer;font-size:12px;margin-left:6px">✕</button>
   </div>
 </nav>
 
@@ -1806,6 +1809,10 @@ function applyUserToUI() {
   document.getElementById('navUser').classList.remove('hidden');
   document.getElementById('navUserName').textContent = currentUser.name;
   document.getElementById('myRdvLink').classList.remove('hidden');
+  // Afficher automatiquement la section RDV
+  const rdvSection = document.getElementById('rdv');
+  if (rdvSection) rdvSection.classList.remove('hidden');
+  updateRdvList();
 }
 
 async function loadUserAppointments() {
@@ -2265,7 +2272,7 @@ function selectPrestation(p, el) {
   booking.time = null;
 }
 
-function goToStep(n) {
+async function goToStep(n) {
   const cur = document.getElementById(`step${currentStep}`) || document.getElementById('stepSuccess');
   if (cur) cur.classList.remove('active');
   const curInd = document.getElementById(`step-ind-${currentStep}`);
@@ -2279,7 +2286,7 @@ function goToStep(n) {
   if (nextInd) { nextInd.classList.add('active'); nextInd.classList.remove('done'); }
 
   if (n === 2) renderCalendar();
-  if (n === 3) renderTimeSlots();
+  if (n === 3) await renderTimeSlots();
   if (n === 4) renderAuthRecap();
   if (n === 5) renderRecap();
 }
@@ -2416,13 +2423,33 @@ function isSlotFree(slot, taken, durationMin, allSlots) {
   return true;
 }
 
-function renderTimeSlots() {
+async function renderTimeSlots() {
   document.getElementById('step3Date').textContent = booking.dateLabel;
   const grid = document.getElementById('timeGrid');
-  grid.innerHTML = '';
+  grid.innerHTML = '<p style="color:var(--grey);font-size:13px">Chargement des disponibilités...</p>';
   const allSlots = getSlotsForDate(booking.date);
-  const taken = (takenSlots[booking.date] || []);
   const durationMin = booking.durationMin || 30;
+
+  // Charger les créneaux pris depuis Supabase
+  if (sb && booking.dateLabel) {
+    try {
+      const { data } = await sb
+        .from('appointments')
+        .select('time_slot')
+        .eq('date_label', booking.dateLabel);
+      if (data && data.length > 0) {
+        if (!takenSlots[booking.date]) takenSlots[booking.date] = [];
+        data.forEach(r => {
+          if (!takenSlots[booking.date].includes(r.time_slot)) {
+            takenSlots[booking.date].push(r.time_slot);
+          }
+        });
+      }
+    } catch(e) { console.error('Supabase slots error:', e); }
+  }
+
+  const taken = (takenSlots[booking.date] || []);
+  grid.innerHTML = '';
 
   // Show duration hint
   let hint = document.getElementById('timeHint');
