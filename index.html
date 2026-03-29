@@ -1859,6 +1859,7 @@ function emailConfirmationClient(appt) {
         <div style="padding:32px 36px 24px;border-bottom:1px solid #1a1a1a">
           <div style="font-size:24px;font-weight:bold;letter-spacing:6px;color:#FFFFFF">NOUNOURS<span style="color:#F06292">.</span></div>
           <div style="font-size:10px;letter-spacing:3px;color:#666;margin-top:4px;text-transform:uppercase">Val d'Oise · En Salon</div>
+          <div style="font-size:11px;color:#555;margin-top:6px;letter-spacing:1px">📍 21 Impasse de la Mothe Hugo</div>
         </div>
 
         <!-- Titre -->
@@ -2431,12 +2432,13 @@ async function renderTimeSlots() {
   const durationMin = booking.durationMin || 30;
 
   // Charger les créneaux pris depuis Supabase
-  if (sb && booking.dateLabel) {
+  if (sb && booking.date) {
     try {
-      const { data } = await sb
+      const { data, error } = await sb
         .from('appointments')
         .select('time_slot')
-        .eq('date_label', booking.dateLabel);
+        .eq('date_key', booking.date);
+      if (error) console.error('Supabase query error:', error);
       if (data && data.length > 0) {
         if (!takenSlots[booking.date]) takenSlots[booking.date] = [];
         data.forEach(r => {
@@ -2534,11 +2536,11 @@ function confirmBooking() {
   // Sauvegarder dans Supabase
   if (sb) {
     sb.from('appointments').insert([{
-      id: String(appt.id),
       client_name: appt.client,
       email: appt.email,
       prestation: appt.prestation,
       date_label: appt.date,
+      date_key: booking.date,
       time_slot: appt.time,
       duration: appt.duration,
       price: appt.price,
